@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">TallyFriend</string>
+    <string name="hello_world">Hello world!@!!!</string>
+    <string name="action_settings">Settings</string>
+    <string name="action_new">New</string>
+    <string name="action_friend">Friend</string>
+    <string name="save">Save</string>
+    <string name="create">Create</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+    <string name="title_activity_tally_list">TallyListActivity</string>
+    <string name="title_activity_tally_edit">TallyEditActivity</string>
+    <string name="title_activity_friend_list">FriendListActivity</string>
+    <string name="title_activity_friend_edit">FriendEditActivity</string>
+
+</resources>
