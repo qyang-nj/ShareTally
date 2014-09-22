@@ -5,7 +5,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 
@@ -47,24 +51,54 @@ public class PersonAdapter extends BaseAdapter {
         ViewHolder vh;
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(android.R.layout.simple_list_item_2, null);
+            convertView = inflater.inflate(R.layout.person_list_item, null);
 
             vh = new ViewHolder();
-            vh.tvName = (TextView) convertView.findViewById(android.R.id.text1);
-            vh.tvEmail = (TextView) convertView.findViewById(android.R.id.text2);
+            vh.text1 = (TextView) convertView.findViewById(R.id.text1);
+            vh.text2 = (TextView) convertView.findViewById(R.id.text2);
+            vh.checkBox = (CheckBox) convertView.findViewById(R.id.chk);
+            vh.del = (ImageView) convertView.findViewById(R.id.del);
+
             convertView.setTag(vh);
         } else {
             vh = (ViewHolder) convertView.getTag();
         }
 
-        vh.tvName.setText(mPeople.get(position).getName());
-        vh.tvEmail.setText(mPeople.get(position).getEmail());
+        vh.text1.setText(mPeople.get(position).getName());
+
+        String email = mPeople.get(position).getEmail();
+        if (StringUtils.isEmpty(email)) {
+            hideText2(vh);
+        } else {
+            vh.text2.setText(mPeople.get(position).getEmail());
+        }
+        //hideText2(vh);
 
         return convertView;
     }
 
-    public static class ViewHolder {
-        public TextView tvName;
-        public TextView tvEmail;
+    private void hideText2(ViewHolder vh) {
+        if (vh.text2 != null) {
+            vh.text2.setHeight(0);
+        }
+    }
+
+    private void hideCheckBox(ViewHolder vh) {
+        if (vh.checkBox != null) {
+            vh.checkBox.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    private void hideDelete(ViewHolder vh) {
+        if (vh.del != null) {
+            vh.del.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    private static class ViewHolder {
+        public TextView text1;
+        public TextView text2;
+        public CheckBox checkBox;
+        public ImageView del;
     }
 }
