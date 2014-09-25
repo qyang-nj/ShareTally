@@ -101,10 +101,6 @@ public class TallyEditActivity extends Activity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.tally_edit, menu);
-        MenuItem mi = menu.findItem(R.id.action_discard);
-        if (Mode.CREATE == mMode) {
-            mi.setVisible(false);
-        }
         return true;
     }
 

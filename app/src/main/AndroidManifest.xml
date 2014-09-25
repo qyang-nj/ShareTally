@@ -14,7 +14,7 @@
         <activity
             android:name=".TallyListActivity"
             android:label="@string/title_activity_tally_list">
-            <intent-filter>
+        <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -23,14 +23,20 @@
         <activity
             android:name=".TallyEditActivity"
             android:label="@string/title_activity_tally_edit"
-            android:parentActivityName=".TallyListActivity"></activity>
+            android:parentActivityName=".TallyListActivity" />
         <activity
             android:name=".FriendListActivity"
-            android:label="@string/title_activity_friend_list"></activity>
+            android:label="@string/title_activity_friend_list" />
         <activity
             android:name=".FriendEditActivity"
             android:label="@string/title_activity_friend_edit"
-            android:parentActivityName=".FriendListActivity"></activity>
+            android:parentActivityName=".FriendListActivity" />
+        <activity
+            android:name=".RecordListActivity"
+            android:label=""></activity>
+        <activity
+            android:name=".RecordEditActivity"
+            android:label="@string/title_activity_record_edit"></activity>
     </application>
 
 </manifest>

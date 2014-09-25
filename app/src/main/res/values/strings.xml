@@ -10,14 +10,19 @@
     <string name="create">Create</string>
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>
-    <string name="name_hint">Friend\'s\ Name</string>
-    <string name="email_hint">His\/Her\ E-mail Address</string>
-    <string name="title_activity_tally_list">TallyListActivity</string>
+    <string name="name_hint">"Friend's Name"</string>
+    <string name="email_hint">"His/Her E-mail Address"</string>
+    <string name="title_activity_tally_list">Tally, Friend</string>
     <string name="title_activity_tally_edit">TallyEditActivity</string>
     <string name="title_activity_friend_list">FriendListActivity</string>
     <string name="title_activity_friend_edit">FriendEditActivity</string>
     <string name="title">Title</string>
-    <string name="decription">Description</string>
+    <string name="description">Description</string>
     <string name="done">Done</string>
+    <string name="title_activity_record_list">RecordListActivity</string>
+    <string name="title_activity_record_edit">RecordEditActivity</string>
+    <string name="label">Label</string>
+    <string name="amount">Amount</string>
+    <string name="lbPrivate">Private</string>
 
 </resources>

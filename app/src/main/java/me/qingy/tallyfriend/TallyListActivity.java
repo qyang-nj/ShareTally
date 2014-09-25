@@ -35,7 +35,7 @@ public class TallyListActivity extends Activity {
                 Tally p = (Tally) mAdapter.getItem(position);
 
 
-                Intent intent = new Intent(TallyListActivity.this, TallyEditActivity.class);
+                Intent intent = new Intent(TallyListActivity.this, RecordListActivity.class);
                 intent.putExtra("TALLY_ID", p.getObjectId());
                 startActivity(intent);
 
