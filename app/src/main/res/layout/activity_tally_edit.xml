@@ -13,7 +13,7 @@
         android:id="@+id/tally_title"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:hint="Title"
+        android:hint="@string/title"
         android:inputType="text" />
 
     <EditText
@@ -21,9 +21,9 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:gravity="top|left"
-        android:hint="Description"
+        android:hint="@string/decription"
         android:inputType="textMultiLine"
-        android:lines="1"
+        android:lines="2"
         android:scrollbars="vertical" />
 
     <LinearLayout
@@ -46,13 +46,28 @@
             android:layout_weight="1" />
     </LinearLayout>
 
-
-    <TextView
-        style="?android:attr/listSeparatorTextViewStyle"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="Participants" />
+        android:layout_height="wrap_content">
 
+        <TextView
+            style="?android:attr/listSeparatorTextViewStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Participants" />
+
+        <ImageButton
+            android:id="@+id/add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/ic_action_add_person" />
+    </RelativeLayout>
+
+    <ListView
+        android:id="@+id/list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 </LinearLayout>

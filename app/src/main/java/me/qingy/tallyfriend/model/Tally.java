@@ -1,8 +1,11 @@
 package me.qingy.tallyfriend.model;
 
+import com.parse.FindCallback;
+import com.parse.GetCallback;
 import com.parse.ParseClassName;
 import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -21,7 +24,27 @@ public class Tally extends ParseObject {
     private static final String KEY_PARTICIPANTS = "participants";
     //private static final String KEY_CURRENCY = "currency";
     private static final String KEY_RECORDS = "records";
-    private List<Person> mParticipants = null;
+
+    public static void fetchTallyInBackground(String id, GetCallback<Tally> cb) {
+        ParseQuery<Tally> query = ParseQuery.getQuery(Tally.class);
+        query.fromLocalDatastore();
+        query.getInBackground(id, cb);
+    }
+
+    public static void fetchTallyListInBackground(FindCallback<Tally> cb) {
+        ParseQuery<Tally> query = ParseQuery.getQuery(Tally.class);
+        query.fromLocalDatastore();
+        query.findInBackground(cb);
+    }
+
+    public void pin() {
+        try {
+            super.pin();
+            super.saveEventually();
+        } catch (ParseException e) {
+            Logger.e(e.getMessage());
+        }
+    }
 
     public String getTitle() {
         return getString(KEY_TITLE);
@@ -62,25 +85,25 @@ public class Tally extends ParseObject {
     }
 
     public List<Person> getParticipants() {
-        if (mParticipants == null) {
-            mParticipants = getList(KEY_PARTICIPANTS);
-            for (Person p : mParticipants) {
-                try {
-                    p.fetchIfNeeded();
-                } catch (ParseException e) {
-                    Logger.e(e.getMessage());
-                    e.printStackTrace();
-                }
-            }
+        List<Person> participants = getList(KEY_PARTICIPANTS);
+        if (participants == null) {
+            return null;
         }
 
-        return mParticipants;
+        for (Person p : participants) {
+            try {
+                p.fetchIfNeeded();
+            } catch (ParseException e) {
+                Logger.e(e.getMessage());
+                e.printStackTrace();
+            }
+        }
+        return participants;
     }
 
     public void setParticipants(List<Person> participants) {
         remove(KEY_PARTICIPANTS);
         addAll(KEY_PARTICIPANTS, participants);
-        mParticipants = participants;
     }
 
     public Map<Person, Result> calculate() {

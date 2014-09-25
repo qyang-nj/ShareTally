@@ -13,14 +13,14 @@
         android:id="@+id/person_name"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:hint="Title"
+        android:hint="@string/name_hint"
         android:inputType="text" />
 
     <EditText
         android:id="@+id/person_email"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:hint="email"
+        android:hint="@string/email_hint"
         android:inputType="textEmailAddress" />
 
 </LinearLayout>

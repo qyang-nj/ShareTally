@@ -7,6 +7,8 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
+import java.util.List;
+
 import me.qingy.tallyfriend.Log.Logger;
 
 /**
@@ -17,6 +19,7 @@ public class Person extends ParseObject {
     private static final String KEY_NAME = "name";
     private static final String KEY_EMAIL = "email";
     private static final String KEY_DELETED = "deleted";
+    private static Person me;
 
     public Person() {
 
@@ -33,10 +36,25 @@ public class Person extends ParseObject {
     }
 
     public static void fetchPersonListInBackground(FindCallback<Person> cb) {
+        fetchPersonListInBackground(cb, null);
+    }
+
+    public static void fetchPersonListInBackground(FindCallback<Person> cb, List<String> excludedIds) {
         ParseQuery<Person> query = ParseQuery.getQuery(Person.class);
         query.fromLocalDatastore();
         query.whereDoesNotExist(KEY_DELETED);
+        query.orderByDescending("updatedAt");
+        if (excludedIds != null) {
+            query.whereNotContainedIn("objectId", excludedIds);
+        }
         query.findInBackground(cb);
+    }
+
+    public static Person getMe() {
+        if (me == null) {
+            me = new Person("Me");
+        }
+        return me;
     }
 
     public void pin() {

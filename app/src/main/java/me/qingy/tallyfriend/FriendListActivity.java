@@ -7,11 +7,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.CheckBox;
 import android.widget.ListView;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import me.qingy.tallyfriend.Log.Logger;
@@ -19,31 +21,49 @@ import me.qingy.tallyfriend.model.Person;
 
 
 public class FriendListActivity extends Activity {
+
     private PersonAdapter mAdapter;
     private ListView mListView;
-    private Mode mMode;
+    private Mode mMode = Mode.DISPLAY;
+    private ArrayList<String> mSelectedItem = new ArrayList<String>();
+    private ArrayList<String> mExcludedItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_friend_list);
 
-        mMode = Mode.CHOICE;
+        String mode = getIntent().getStringExtra("MODE");
+        if (mode != null) {
+            mMode = Enum.valueOf(Mode.class, mode);
+        }
+
+        mExcludedItem = getIntent().getStringArrayListExtra("EXCLUDED_IDS");
 
         mListView = (ListView) findViewById(R.id.friend_list);
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Person p = (Person) mAdapter.getItem(position);
-                Intent intent = new Intent(FriendListActivity.this, FriendEditActivity.class);
-                intent.putExtra("PersonID", p.getObjectId());
-                startActivity(intent);
+
+                if (Mode.DISPLAY == mMode) {
+                    Intent intent = new Intent(FriendListActivity.this, FriendEditActivity.class);
+                    intent.putExtra("PersonID", p.getObjectId());
+                    startActivity(intent);
+                } else if (Mode.SELECTION == mMode) {
+                    CheckBox cb = (CheckBox) view.findViewById(R.id.chk);
+                    boolean checked = !cb.isChecked();
+                    cb.setChecked(checked);
+                    if (checked) {
+                        Logger.d("Add " + p.getName());
+                        mSelectedItem.add(p.getObjectId());
+                    } else {
+                        Logger.d("Remove " + p.getName());
+                        mSelectedItem.remove(p.getObjectId());
+                    }
+                }
             }
         });
-
-        if (mMode == Mode.CHOICE) {
-            mListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-        }
     }
 
     @Override
@@ -58,6 +78,9 @@ public class FriendListActivity extends Activity {
 
                 if (mAdapter == null) {
                     mAdapter = new PersonAdapter(FriendListActivity.this, people);
+                    if (mMode == Mode.SELECTION) {
+                        mAdapter.setLayout(R.layout.item_text_2_check);
+                    }
                     mListView.setAdapter(mAdapter);
                 } else {
                     mAdapter.setList(people);
@@ -65,13 +88,18 @@ public class FriendListActivity extends Activity {
                 }
                 Logger.d("Fetch data done.");
             }
-        });
+        }, mExcludedItem);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.friend_list, menu);
+
+        MenuItem mi = menu.findItem(R.id.action_done);
+        if (mi != null) {
+            mi.setVisible(mMode == Mode.SELECTION);
+        }
+
         return true;
     }
 
@@ -80,15 +108,21 @@ public class FriendListActivity extends Activity {
         Intent intent;
 
         switch (item.getItemId()) {
-            case R.id.action_new_friend:
+            case R.id.action_new:
                 intent = new Intent(this, FriendEditActivity.class);
                 startActivity(intent);
                 break;
+            case R.id.action_done:
+                Intent resultData = new Intent();
+                resultData.putStringArrayListExtra("SELECTED_ITEMS", mSelectedItem);
+                setResult(Activity.RESULT_OK, resultData);
+                finish();
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    private enum Mode {
-        DISPLAY, CHOICE
+    static public enum Mode {
+        DISPLAY, SELECTION
     }
 }

@@ -2,8 +2,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="me.qingy.tallyfriend.FriendListActivity">
     <item
-        android:id="@+id/action_new_friend"
+        android:id="@+id/action_new"
         android:icon="@drawable/ic_action_add_person"
-        android:showAsAction="always"
+        android:showAsAction="ifRoom"
         android:title="@string/action_settings" />
+
+    <item
+        android:id="@+id/action_done"
+        android:icon="@drawable/ic_action_accept"
+        android:showAsAction="ifRoom"
+        android:title="@string/done" />
 </menu>
