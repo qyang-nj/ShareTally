@@ -12,6 +12,10 @@ public class Logger {
         Log.e(TAG, msg);
     }
 
+    public static void e(Object obj, String msg) {
+        Log.e(TAG, String.format("[%s] %s", obj.getClass().getName(), msg));
+    }
+
     public static void d(String msg) {
         Log.d(TAG, msg);
     }

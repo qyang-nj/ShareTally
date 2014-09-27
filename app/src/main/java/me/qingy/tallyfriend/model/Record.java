@@ -1,8 +1,10 @@
 package me.qingy.tallyfriend.model;
 
+import com.parse.GetCallback;
 import com.parse.ParseClassName;
 import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -22,7 +24,13 @@ public class Record extends ParseObject {
     private static final String KEY_ALL_EQUAL = "allEqual";
     private static final String KEY_WEIGHT = "weights";
 
-    public String getCaption() {
+    public static void fetchRecordInBackground(String id, GetCallback<Record> cb) {
+        ParseQuery<Record> query = ParseQuery.getQuery(Record.class);
+        query.fromLocalDatastore();
+        query.getInBackground(id, cb);
+    }
+
+    public String getLabel() {
         return getString(KEY_CAPTION);
     }
 
@@ -49,7 +57,10 @@ public class Record extends ParseObject {
     public Person getPayer() {
         Person p = null;
         try {
-            p = getParseObject(KEY_PAYER).fetchIfNeeded();
+            ParseObject po = getParseObject(KEY_PAYER);
+            if (po != null) {
+                p = po.fetchIfNeeded();
+            }
         } catch (ParseException e) {
             Logger.e(e.getMessage());
             e.printStackTrace();
@@ -70,10 +81,13 @@ public class Record extends ParseObject {
     }
 
     public List<Double> getBeneficiaryWeights() {
-        List<Double> weights = new ArrayList<Double>();
+        List<Double> weights = null;
         List<Number> numbers = getList(KEY_WEIGHT);
-        for (Number n : numbers) {
-            weights.add(n.doubleValue());
+        if (numbers != null) {
+            weights = new ArrayList<Double>();
+            for (Number n : numbers) {
+                weights.add(n.doubleValue());
+            }
         }
         return weights;
     }

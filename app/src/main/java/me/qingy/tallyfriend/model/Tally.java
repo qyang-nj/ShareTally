@@ -72,12 +72,14 @@ public class Tally extends ParseObject {
 
     public List<Record> getRecords() {
         List<Record> records = getList(KEY_RECORDS);
-        for (Record r : records) {
-            try {
-                r.fetchIfNeeded();
-            } catch (ParseException e) {
-                Logger.e(e.getMessage());
-                e.printStackTrace();
+        if (records != null) {
+            for (Record r : records) {
+                try {
+                    r.fetchIfNeeded();
+                } catch (ParseException e) {
+                    Logger.e(e.getMessage());
+                    e.printStackTrace();
+                }
             }
         }
 

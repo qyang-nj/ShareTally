@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
         android:name=".App"
@@ -14,9 +15,8 @@
         <activity
             android:name=".TallyListActivity"
             android:label="@string/title_activity_tally_list">
-        <intent-filter>
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -33,10 +33,10 @@
             android:parentActivityName=".FriendListActivity" />
         <activity
             android:name=".RecordListActivity"
-            android:label=""></activity>
+            android:label="" />
         <activity
             android:name=".RecordEditActivity"
-            android:label="@string/title_activity_record_edit"></activity>
+            android:label="@string/title_activity_record_edit" />
     </application>
 
 </manifest>

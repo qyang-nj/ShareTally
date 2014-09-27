@@ -1,9 +1,16 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="me.qingy.tallyfriend.RecordEditActivity">
+
     <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:showAsAction="never"
-        android:title="@string/action_settings" />
+        android:id="@+id/anction_delete"
+        android:showAsAction="always"
+        android:title="@string/delete"
+        android:icon="@android:drawable/ic_menu_delete" />
+
+    <item
+        android:id="@+id/action_save"
+        android:showAsAction="always"
+        android:title="@string/save"
+        android:icon="@android:drawable/ic_menu_save"/>
 </menu>

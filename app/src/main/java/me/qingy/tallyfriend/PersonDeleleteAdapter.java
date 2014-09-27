@@ -12,11 +12,11 @@ import me.qingy.tallyfriend.model.Person;
 /**
  * Created by YangQ on 9/25/2014.
  */
-public class PersonDelAdapter extends PersonAdapter {
+public class PersonDeleleteAdapter extends PersonAdapter {
 
     private View.OnClickListener mDeleteCb;
 
-    public PersonDelAdapter(Context context, List<Person> people) {
+    public PersonDeleleteAdapter(Context context, List<Person> people) {
         super(context, people);
         setLayout(R.layout.item_text_2_del);
     }

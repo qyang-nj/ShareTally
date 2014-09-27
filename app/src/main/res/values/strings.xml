@@ -24,5 +24,8 @@
     <string name="label">Label</string>
     <string name="amount">Amount</string>
     <string name="lbPrivate">Private</string>
+    <string name="participants">Participants</string>
+    <string name="all_equal">"ALL Equal"</string>
+    <string name="payer">Payer</string>
 
 </resources>

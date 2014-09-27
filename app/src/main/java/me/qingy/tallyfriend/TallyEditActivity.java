@@ -32,7 +32,7 @@ public class TallyEditActivity extends Activity {
 
     private Mode mMode = Mode.CREATE;
     private Tally mTally;
-    private PersonDelAdapter mParticipantAdapter;
+    private PersonDeleleteAdapter mParticipantAdapter;
     private List<Person> mParticipants;
 
     @Override
@@ -157,7 +157,7 @@ public class TallyEditActivity extends Activity {
         }
 
         if (mParticipantAdapter == null) {
-            mParticipantAdapter = new PersonDelAdapter(this, mParticipants);
+            mParticipantAdapter = new PersonDeleleteAdapter(this, mParticipants);
             mParticipantAdapter.setDeleteCb(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

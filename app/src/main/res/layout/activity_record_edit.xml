@@ -9,6 +9,11 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="me.qingy.tallyfriend.RecordEditActivity">
 
+    <Button
+        android:id="@+id/amount"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+
     <EditText
         android:id="@+id/label"
         android:layout_width="fill_parent"
@@ -16,20 +21,71 @@
         android:hint="@string/label"
         android:inputType="text" />
 
-    <EditText
-        android:id="@+id/amount"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/amount"
-        android:inputType="numberDecimal" />
-
-    <Spinner
+    <Button
+        android:id="@+id/date"
+        style="?android:attr/spinnerStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/payer" />
+
+        <Button
+            android:id="@+id/payer"
+            style="?android:attr/spinnerStyle"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
 
     <CheckedTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:checkMark="?android:attr/listChoiceIndicatorMultiple"
         android:text="@string/lbPrivate" />
 
+    <TextView
+        style="?android:attr/listSeparatorTextViewStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Applied To" />
+
+    <CheckBox
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:checkMark="?android:attr/listChoiceIndicatorMultiple"
+        android:text="@string/all_equal"
+        android:clickable="true" />
+
+    <ListView
+        android:id="@+id/list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:text="Save and Create" />
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:text="@string/save" />
+    </LinearLayout>
 </LinearLayout>

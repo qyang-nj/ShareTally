@@ -44,7 +44,6 @@ public class RecordListActivity extends Activity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.record_list, menu);
         return true;
     }
@@ -60,6 +59,7 @@ public class RecordListActivity extends Activity {
                 break;
             case R.id.action_new:
                 intent = new Intent(RecordListActivity.this, RecordEditActivity.class);
+                intent.putExtra("TALLY_ID", mTally.getObjectId());
                 startActivity(intent);
                 break;
             case R.id.action_delete:
