@@ -36,7 +36,7 @@
             android:label="" />
         <activity
             android:name=".RecordEditActivity"
-            android:label="@string/title_activity_record_edit" />
+            android:label=""/>
     </application>
 
 </manifest>

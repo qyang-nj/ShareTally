@@ -8,6 +8,8 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -81,6 +83,13 @@ public class Tally extends ParseObject {
                     e.printStackTrace();
                 }
             }
+
+            Collections.sort(records, new Comparator<Record>() {
+                @Override
+                public int compare(Record lhs, Record rhs) {
+                    return -lhs.getDate().compareTo(rhs.getDate());
+                }
+            });
         }
 
         return records;

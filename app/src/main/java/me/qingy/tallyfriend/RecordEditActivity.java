@@ -11,6 +11,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ListView;
 
@@ -33,7 +35,7 @@ import me.qingy.tallyfriend.model.Tally;
 
 
 public class RecordEditActivity extends FragmentActivity
-        implements CalendarDatePickerDialog.OnDateSetListener, NumberPickerDialogFragment.NumberPickerDialogHandler {
+        implements CalendarDatePickerDialog.OnDateSetListener {
 
     private static final String FRAG_TAG_DATE_PICKER = "fragment_date_picker";
     /* Controls */
@@ -51,6 +53,7 @@ public class RecordEditActivity extends FragmentActivity
     private Tally mTally;
     private Record mRecord;
     private PersonWeightAdapter mParticipantAdapter;
+    private Mode mMode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,12 +62,30 @@ public class RecordEditActivity extends FragmentActivity
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
-        mEtLabel = (EditText) findViewById(R.id.label);
         mBtnAmount = (Button) findViewById(R.id.amount);
-        mLvWeights = (ListView) findViewById(R.id.list);
-        mBtnPayer = (Button) findViewById(R.id.payer);
+        mEtLabel = (EditText) findViewById(R.id.label);
         mBtnDate = (Button) findViewById(R.id.date);
+        mBtnPayer = (Button) findViewById(R.id.payer);
+        mLvWeights = (ListView) findViewById(R.id.list);
 
+        /* Save and New */
+        findViewById(R.id.save_and_new).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                save();
+                mRecord = new Record();
+                fillData(mRecord);
+            }
+        });
+
+        /* Save */
+        findViewById(R.id.save).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                save();
+                finish();
+            }
+        });
 
         String tallyId = getIntent().getStringExtra("TALLY_ID");
         if (tallyId == null) {
@@ -72,6 +93,13 @@ public class RecordEditActivity extends FragmentActivity
         }
 
         final String recordId = getIntent().getStringExtra("RECORD_ID");
+        if (recordId == null) {
+            mMode = Mode.CREATE;
+            getActionBar().setTitle(getResources().getString(R.string.title_activity_add_record).toUpperCase());
+        } else {
+            mMode = Mode.EDIT;
+            getActionBar().setTitle(getResources().getString(R.string.title_activity_edit_record).toUpperCase());
+        }
 
         Tally.fetchTallyInBackground(tallyId, new GetCallback<Tally>() {
             @Override
@@ -84,7 +112,6 @@ public class RecordEditActivity extends FragmentActivity
 
                 if (recordId == null) {
                     mRecord = new Record();
-                    mTally.addRecord(mRecord);
                     fillData(mRecord);
                 } else {
                     Record.fetchRecordInBackground(recordId, new GetCallback<Record>() {
@@ -98,7 +125,6 @@ public class RecordEditActivity extends FragmentActivity
                             }
                         }
                     });
-
                 }
             }
         });
@@ -118,6 +144,10 @@ public class RecordEditActivity extends FragmentActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.record_edit, menu);
+
+        if (mMode == Mode.CREATE) {
+            menu.findItem(R.id.action_delete).setVisible(false);
+        }
         return true;
     }
 
@@ -126,6 +156,8 @@ public class RecordEditActivity extends FragmentActivity
 
         switch (item.getItemId()) {
             case R.id.action_save:
+                save();
+                finish();
                 break;
             case R.id.action_delete:
                 break;
@@ -144,12 +176,6 @@ public class RecordEditActivity extends FragmentActivity
         mBtnDate.setText(DateFormat.getDateInstance().format(mDate));
     }
 
-    @Override
-    public void onDialogNumberSet(int reference, int number, double decimal, boolean isNegative, double fullNumber) {
-        mAmount = fullNumber;
-        mBtnAmount.setText(((Double) mAmount).toString());
-    }
-
     /* Before this function is invoked, tally and record should be ready. */
     private void fillData(Record r) {
         /* Set amount */
@@ -161,8 +187,8 @@ public class RecordEditActivity extends FragmentActivity
                 NumberPickerBuilder npb = new NumberPickerBuilder()
                         .setFragmentManager(getSupportFragmentManager())
                         .setPlusMinusVisibility(View.INVISIBLE)
-                        .setLabelText("Amount")
-                        .setStyleResId(R.style.BetterPickersDialogFragment_Light);
+                        .setStyleResId(R.style.BetterPickersDialogFragment_Light)
+                        .addNumberPickerDialogHandler(new AmountSetCallback());
                 npb.show();
             }
         });
@@ -213,12 +239,18 @@ public class RecordEditActivity extends FragmentActivity
             }};
         }
 
-        mParticipantAdapter = new PersonWeightAdapter(RecordEditActivity.this, mParticipants, mWeights);
+        mParticipantAdapter = new PersonWeightAdapter(RecordEditActivity.this, mParticipants, mWeights, getSupportFragmentManager());
         mLvWeights.setAdapter(mParticipantAdapter);
     }
 
     private void save() {
-
+        mRecord.setAmount(mAmount);
+        mRecord.setCaption(mEtLabel.getText().toString());
+        mRecord.setDate(mDate);
+        mRecord.setPayer(mPayer);
+        mRecord.setBeneficiaryWeights(mWeights);
+        mTally.addRecord(mRecord);
+        mTally.pin();
     }
 
     public class PayerSelectionDialogFragment extends DialogFragment {
@@ -237,5 +269,17 @@ public class RecordEditActivity extends FragmentActivity
             mPayer = mParticipants.get(which);
             mBtnPayer.setText(mPayer.getName());
         }
+    }
+
+    public class AmountSetCallback implements NumberPickerDialogFragment.NumberPickerDialogHandler {
+        @Override
+        public void onDialogNumberSet(int reference, int number, double decimal, boolean isNegative, double fullNumber) {
+            mAmount = fullNumber;
+            mBtnAmount.setText(((Double) mAmount).toString());
+        }
+    }
+
+    private enum Mode {
+        CREATE, EDIT
     }
 }

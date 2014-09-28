@@ -25,7 +25,9 @@
     <string name="amount">Amount</string>
     <string name="lbPrivate">Private</string>
     <string name="participants">Participants</string>
-    <string name="all_equal">"ALL Equal"</string>
+    <string name="all_equal">"All Equal"</string>
     <string name="payer">Payer</string>
-
+    <string name="title_activity_add_record">"Add Record"</string>
+    <string name="title_activity_edit_record">"Edit Record"</string>
+    <string name="save_and_new">"Save and New"</string>
 </resources>

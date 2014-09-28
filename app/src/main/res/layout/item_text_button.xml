@@ -3,6 +3,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <CheckBox
+        android:id="@+id/chk"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
     <include layout="@android:layout/simple_list_item_1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

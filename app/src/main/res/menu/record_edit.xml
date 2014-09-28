@@ -3,7 +3,7 @@
     tools:context="me.qingy.tallyfriend.RecordEditActivity">
 
     <item
-        android:id="@+id/anction_delete"
+        android:id="@+id/action_delete"
         android:showAsAction="always"
         android:title="@string/delete"
         android:icon="@android:drawable/ic_menu_delete" />
