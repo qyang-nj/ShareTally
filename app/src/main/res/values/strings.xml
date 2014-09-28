@@ -30,4 +30,7 @@
     <string name="title_activity_add_record">"Add Record"</string>
     <string name="title_activity_edit_record">"Edit Record"</string>
     <string name="save_and_new">"Save and New"</string>
+    <string name="calculate">Calculate</string>
+    <string name="title_activity_result">ResultActivity</string>
+
 </resources>

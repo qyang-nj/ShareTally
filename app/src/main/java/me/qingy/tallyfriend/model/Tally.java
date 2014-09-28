@@ -131,7 +131,9 @@ public class Tally extends ParseObject {
             Person payer = r.getPayer();
             double totalWeight = 0.0;
             for (int i = 0; i < participants.size(); ++i) {
-                totalWeight += weights.get(i);
+                if (i < weights.size()) {
+                    totalWeight += weights.get(i);
+                }
             }
 
             double paid = r.getAmount();

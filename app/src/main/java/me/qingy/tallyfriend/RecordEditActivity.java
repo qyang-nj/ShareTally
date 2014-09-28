@@ -239,6 +239,12 @@ public class RecordEditActivity extends FragmentActivity
             }};
         }
 
+        /* If the number of participants is larger than the size of weights, then fill up. */
+        int s = mWeights.size();
+        for (int i = 0; i < mParticipants.size() - s; ++i) {
+            mWeights.add(0.0);
+        }
+
         mParticipantAdapter = new PersonWeightAdapter(RecordEditActivity.this, mParticipants, mWeights, getSupportFragmentManager());
         mLvWeights.setAdapter(mParticipantAdapter);
     }

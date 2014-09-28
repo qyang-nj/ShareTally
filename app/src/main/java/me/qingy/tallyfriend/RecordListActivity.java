@@ -7,6 +7,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 
 import com.parse.FindCallback;
@@ -23,6 +24,7 @@ import me.qingy.tallyfriend.model.Tally;
 public class RecordListActivity extends Activity {
 
     private ListView mLvRecords;
+    private Button mBtnCalculate;
 
     private Tally mTally;
     private RecordAdapter mAdapter;
@@ -40,6 +42,16 @@ public class RecordListActivity extends Activity {
                 Intent intent = new Intent(RecordListActivity.this, RecordEditActivity.class);
                 intent.putExtra("TALLY_ID", mTally.getObjectId());
                 intent.putExtra("RECORD_ID", mRecords.get(position).getObjectId());
+                startActivity(intent);
+            }
+        });
+
+        mBtnCalculate = (Button) findViewById(R.id.calculate);
+        mBtnCalculate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(RecordListActivity.this, ResultActivity.class);
+                intent.putExtra("TALLY_ID", mTally.getObjectId());
                 startActivity(intent);
             }
         });
