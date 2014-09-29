@@ -11,8 +11,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ListView;
 
@@ -68,22 +66,11 @@ public class RecordEditActivity extends FragmentActivity
         mBtnPayer = (Button) findViewById(R.id.payer);
         mLvWeights = (ListView) findViewById(R.id.list);
 
-        /* Save and New */
-        findViewById(R.id.save_and_new).setOnClickListener(new View.OnClickListener() {
+        /* Label list */
+        findViewById(R.id.label_list).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                save();
-                mRecord = new Record();
-                fillData(mRecord);
-            }
-        });
-
-        /* Save */
-        findViewById(R.id.save).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                save();
-                finish();
+                new LabelListDialogFragment().show(getSupportFragmentManager(), "123");
             }
         });
 
@@ -147,6 +134,8 @@ public class RecordEditActivity extends FragmentActivity
 
         if (mMode == Mode.CREATE) {
             menu.findItem(R.id.action_delete).setVisible(false);
+        } else if (mMode == Mode.EDIT) {
+            menu.findItem(R.id.action_save_new).setVisible(false);
         }
         return true;
     }
@@ -159,6 +148,10 @@ public class RecordEditActivity extends FragmentActivity
                 save();
                 finish();
                 break;
+            case R.id.action_save_new:
+                save();
+                mRecord = new Record();
+                fillData(mRecord);
             case R.id.action_delete:
                 break;
         }
@@ -259,6 +252,7 @@ public class RecordEditActivity extends FragmentActivity
         mTally.pin();
     }
 
+    /* Payer selection */
     public class PayerSelectionDialogFragment extends DialogFragment {
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -274,6 +268,23 @@ public class RecordEditActivity extends FragmentActivity
         public void onClick(DialogInterface dialog, int which) {
             mPayer = mParticipants.get(which);
             mBtnPayer.setText(mPayer.getName());
+        }
+    }
+
+    /* Label list */
+    public class LabelListDialogFragment extends DialogFragment {
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setTitle(getResources().getString(R.string.labels))
+                    .setItems(R.array.label_list, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    mEtLabel.setText(getResources().getStringArray(R.array.label_list)[which]);
+                                }
+                            }
+                    )
+                    .setNegativeButton(android.R.string.cancel, null);
+            return builder.create();
         }
     }
 

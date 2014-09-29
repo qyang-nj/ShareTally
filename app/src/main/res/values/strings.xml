@@ -22,6 +22,7 @@
     <string name="title_activity_record_list">RecordListActivity</string>
     <string name="title_activity_record_edit">RecordEditActivity</string>
     <string name="label">Label</string>
+    <string name="labels">Labels</string>
     <string name="amount">Amount</string>
     <string name="lbPrivate">Private</string>
     <string name="participants">Participants</string>
@@ -33,4 +34,14 @@
     <string name="calculate">Calculate</string>
     <string name="title_activity_result">ResultActivity</string>
 
+    <string name="record_label_breakfast">Breakfast</string>
+    <string name="record_label_lunch">Lunch</string>
+    <string name="record_label_dinner">Dinner</string>
+    <string name="record_label_hotel">Hotel</string>
+    <string name="record_label_car_rental">"Car Rental"</string>
+    <string name="record_label_gasoline">Gasoline</string>
+    <string name="record_label_ticket">Ticket</string>
+    <string name="record_label_toll">Toll</string>
+    <string name="date">Date</string>
+    <string name="applied_to">Applied To</string>
 </resources>

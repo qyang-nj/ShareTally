@@ -9,88 +9,86 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="me.qingy.tallyfriend.RecordEditActivity">
 
+    <Button
+        android:id="@+id/amount"
+        style="?android:attr/editTextStyle"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textSize="30sp"
+        android:textColor="@android:color/holo_red_dark" />
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="vertical">
-
-        <Button
-            android:id="@+id/amount"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
         <EditText
             android:id="@+id/label"
-            android:layout_width="fill_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:hint="@string/label"
             android:inputType="text" />
+
+        <ImageButton
+            android:id="@+id/label_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="center"
+            android:background="@drawable/list_button" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/PromptText"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/date" />
 
         <Button
             android:id="@+id/date"
             style="?android:attr/spinnerStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/payer" />
-
-            <Button
-                android:id="@+id/payer"
-                style="?android:attr/spinnerStyle"
-                android:layout_width="0dp"
-                android:layout_weight="2"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-
-
-        <CheckedTextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:checkMark="?android:attr/listChoiceIndicatorMultiple"
-            android:text="@string/lbPrivate" />
-
-        <TextView
-            style="?android:attr/listSeparatorTextViewStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="Applied To" />
-
-        <ListView
-            android:id="@+id/list"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
+            android:layout_weight="3"/>
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/PromptText"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/payer" />
 
         <Button
-            android:id="@+id/save_and_new"
+            android:id="@+id/payer"
+            style="?android:attr/spinnerStyle"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
             android:layout_weight="3"
-            style="?android:attr/buttonBarButtonStyle"
-            android:text="@string/save_and_new" />
-
-        <Button
-            android:id="@+id/save"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            style="?android:attr/buttonBarButtonStyle"
-            android:text="@string/save" />
+            android:layout_height="wrap_content" />
     </LinearLayout>
+
+    <TextView
+        style="?android:attr/listSeparatorTextViewStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:text="@string/applied_to" />
+
+    <ListView
+        android:id="@+id/list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
 </LinearLayout>

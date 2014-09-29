@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="label_list">
+        <item>@string/record_label_breakfast</item>
+        <item>@string/record_label_lunch</item>
+        <item>@string/record_label_dinner</item>
+        <item>@string/record_label_hotel</item>
+        <item>@string/record_label_car_rental</item>
+        <item>@string/record_label_gasoline</item>
+        <item>@string/record_label_ticket</item>
+        <item>@string/record_label_toll</item>
+    </string-array>
+</resources>

@@ -31,4 +31,12 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <style name="PromptText">
+        <item name="android:textAppearance">?android:textAppearance</item>
+        <item name="android:layout_marginLeft">12dp</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textColor">@android:color/holo_blue_dark</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
 </resources>
