@@ -4,38 +4,64 @@
     android:layout_height="match_parent"
     android:orientation="horizontal">
 
-    <include
-        layout="@android:layout/simple_list_item_1"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1" />
-
     <LinearLayout
         android:layout_width="0dp"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="10dp"
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/to_pay"
+            android:id="@android:id/text1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="123" />
+            android:layout_marginBottom="4dp"
+            style="?android:attr/textAppearanceLarge" />
 
-        <TextView
-            android:id="@+id/paid"
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="321" />
+            android:orientation="horizontal">
 
+            <ImageView
+                android:id="@+id/icon_paid"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/icon_paid"
+                android:contentDescription="@string/prompt_already_paid"/>
+
+            <TextView
+                android:id="@+id/paid"
+                style="@style/SubText"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:text="99"/>
+
+            <ImageView
+                android:id="@+id/icon_to_pay"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/icon_to_pay"
+                android:contentDescription="@string/prompt_to_pay"/>
+
+            <TextView
+                style="@style/SubText"
+                android:id="@+id/to_pay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="88"/>
+
+        </LinearLayout>
     </LinearLayout>
 
     <TextView
         android:id="@+id/final_result"
         style="@style/BoldText"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
         android:text="haha" />
-
 </LinearLayout>

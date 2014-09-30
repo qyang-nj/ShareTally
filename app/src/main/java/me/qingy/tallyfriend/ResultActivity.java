@@ -9,7 +9,6 @@ import android.widget.ListView;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 
-import java.util.List;
 import java.util.Map;
 
 import me.qingy.tallyfriend.Log.Logger;
@@ -28,6 +27,7 @@ public class ResultActivity extends Activity {
         setContentView(R.layout.activity_result);
 
         mLvResults = (ListView) findViewById(R.id.list);
+        mLvResults.setEnabled(false); /* Disable selection */
 
         String tallyId = getIntent().getStringExtra("TALLY_ID");
         if (tallyId == null) {
@@ -61,12 +61,9 @@ public class ResultActivity extends Activity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
+        switch (item.getItemId()) {
+            case R.id.action_help:
+                break;
         }
         return super.onOptionsItemSelected(item);
     }

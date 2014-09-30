@@ -77,7 +77,7 @@ public class Tally extends ParseObject {
         if (records != null) {
             for (Record r : records) {
                 try {
-                    r.fetchIfNeeded();
+                    r.fetchFromLocalDatastore();
                 } catch (ParseException e) {
                     Logger.e(e.getMessage());
                     e.printStackTrace();
@@ -103,7 +103,7 @@ public class Tally extends ParseObject {
 
         for (Person p : participants) {
             try {
-                p.fetchIfNeeded();
+                p.fetchFromLocalDatastore();
             } catch (ParseException e) {
                 Logger.e(e.getMessage());
                 e.printStackTrace();

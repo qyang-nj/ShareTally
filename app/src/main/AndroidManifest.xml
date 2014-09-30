@@ -40,7 +40,7 @@
             android:label="" />
         <activity
             android:name=".ResultActivity"
-            android:label="@string/title_activity_result" >
+            android:label="" >
         </activity>
     </application>
 
