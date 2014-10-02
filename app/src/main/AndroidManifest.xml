@@ -27,7 +27,7 @@
             android:parentActivityName=".TallyListActivity" />
         <activity
             android:name=".FriendListActivity"
-            android:label="@string/title_activity_friend_list" />
+            android:label="@string/title_friends" />
         <activity
             android:name=".FriendEditActivity"
             android:label="@string/title_activity_friend_edit"

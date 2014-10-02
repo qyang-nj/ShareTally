@@ -1,6 +1,7 @@
 package me.qingy.tallyfriend;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -32,11 +33,11 @@ public class FriendEditActivity extends Activity {
         String personId = getIntent().getStringExtra("PersonID");
         if (personId == null) { /* Create */
             mMode = Mode.CREATE;
-            getActionBar().setTitle(getResources().getString(R.string.create).toUpperCase());
+            getActionBar().setTitle(getResources().getString(R.string.title_add_friend));
             mPerson = new Person();
         } else { /* Edit */
             mMode = Mode.EDIT;
-            getActionBar().setTitle(getResources().getString(R.string.edit).toUpperCase());
+            getActionBar().setTitle(getResources().getString(R.string.edit));
             Person.fetchPersonInBackground(personId, new GetCallback<Person>() {
                 @Override
                 public void done(Person person, ParseException e) {
@@ -74,9 +75,14 @@ public class FriendEditActivity extends Activity {
                 onBackPressed();
                 break;
             case R.id.action_delete:
-                mPerson.remove();
-                mPerson.pin();
-                onBackPressed();
+                new ConfirmationDialog().setArguments(getText(R.string.warning_delete_friend), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        mPerson.remove();;
+                        mPerson.pin();
+                        onBackPressed();
+                    }
+                }).show(getFragmentManager(), null);
                 break;
         }
         return super.onOptionsItemSelected(item);

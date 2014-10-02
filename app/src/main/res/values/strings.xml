@@ -15,6 +15,11 @@
     <string name="title_edit_tally">"Edit Tally"</string>
     <string name="title_add_record">"Add Record"</string>
     <string name="title_edit_record">"Edit Record"</string>
+    <string name="title_friends">Friends</string>
+    <string name="title_add_friend">"Add a Friend"</string>
+    <string name="title_edit_friend">"Edit a Friend"</string>
+
+    <string name="warning_delete_friend">"This friend will be deleted.\nHe will still appear on the tallies as a participant."</string>
 
     <string name="app_name">TallyFriend</string>
     <string name="hello_world">Hello world!@!!!</string>

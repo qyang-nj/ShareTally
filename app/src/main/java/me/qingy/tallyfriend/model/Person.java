@@ -43,7 +43,7 @@ public class Person extends ParseObject {
         ParseQuery<Person> query = ParseQuery.getQuery(Person.class);
         query.fromLocalDatastore();
         query.whereDoesNotExist(KEY_DELETED);
-        query.orderByDescending("updatedAt");
+        query.orderByAscending(KEY_NAME);
         if (excludedIds != null) {
             query.whereNotContainedIn("objectId", excludedIds);
         }
