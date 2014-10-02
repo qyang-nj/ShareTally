@@ -16,8 +16,8 @@ import me.qingy.tallyfriend.model.Person;
  * Created by YangQ on 9/19/2014.
  */
 public class PersonAdapter extends BaseAdapter {
-    private Context mContext;
-    private List<Person> mPeople;
+    protected Context mContext;
+    protected List<Person> mPeople;
     private int mLayoutId = android.R.layout.simple_list_item_2;
 
     public PersonAdapter(Context context, List<Person> people) {

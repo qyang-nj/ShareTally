@@ -14,7 +14,7 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name=".TallyListActivity"
-            android:label="@string/title_activity_tally_list" >
+            android:label="@string/title_share_tally" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

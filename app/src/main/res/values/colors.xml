@@ -3,4 +3,6 @@
     <color name="color_red">#FFFF0000</color>
     <color name="color_green">#FF006400</color>
     <color name="sub_text">#FFA9A9A9</color>
+    <color name="button_normal">#2980b9</color>
+    <color name="button_pressed">#8dd8ff</color>
 </resources>

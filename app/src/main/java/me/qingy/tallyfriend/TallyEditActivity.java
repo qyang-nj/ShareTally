@@ -34,6 +34,7 @@ public class TallyEditActivity extends Activity {
     private Tally mTally;
     private PersonDeleleteAdapter mParticipantAdapter;
     private List<Person> mParticipants;
+    private int mSavedNumberOfPeople = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,20 +71,30 @@ public class TallyEditActivity extends Activity {
         String tallyId = getIntent().getStringExtra("TALLY_ID");
         if (tallyId == null) { /* Create */
             mMode = Mode.CREATE;
-            getActionBar().setTitle(getResources().getString(R.string.create).toUpperCase());
+            getActionBar().setTitle(getResources().getString(R.string.title_create_tally).toUpperCase());
             mTally = new Tally();
             setAdapter();
         } else { /* Edit */
             mMode = Mode.EDIT;
-            getActionBar().setTitle(getResources().getString(R.string.edit).toUpperCase());
+            getActionBar().setTitle(getResources().getString(R.string.title_edit_tally).toUpperCase());
             Tally.fetchTallyInBackground(tallyId, new GetCallback<Tally>() {
                 @Override
                 public void done(Tally tally, ParseException e) {
+                    if (tally.isDirty()) {
+                        try {
+                            tally.fetchFromLocalDatastore();
+                        }catch (ParseException ee) {
+                            ee.printStackTrace();
+                        }
+                    }
+
                     if (e == null) {
                         mTally = tally;
                         mEtTitle.setText(mTally.getTitle());
                         mEtDescription.setText(mTally.getDescription());
-                        mParticipants = mTally.getParticipants();
+                        /* Make a copy of original list. */
+                        mParticipants = new ArrayList<Person>() {{addAll(mTally.getParticipants());}};
+                        mSavedNumberOfPeople = mParticipants.size();
                         setAdapter();
                     } else {
                         Logger.e(e.getMessage());
@@ -158,14 +169,12 @@ public class TallyEditActivity extends Activity {
 
         if (mParticipantAdapter == null) {
             mParticipantAdapter = new PersonDeleleteAdapter(this, mParticipants);
-            mParticipantAdapter.setDeleteCb(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mParticipants.remove(v.getTag());
-                    mParticipantAdapter.notifyDataSetChanged();
-                }
-            });
             mLvParticipants.setAdapter(mParticipantAdapter);
+
+            /* If a tally already has one or more records, current participants are not allowed to be deleted. */
+            if (mTally.hasRecord()) {
+                mParticipantAdapter.setNumberOfUndeletablePeople(mSavedNumberOfPeople);
+            }
         }
     }
 

@@ -82,10 +82,10 @@ public class RecordEditActivity extends FragmentActivity
         final String recordId = getIntent().getStringExtra("RECORD_ID");
         if (recordId == null) {
             mMode = Mode.CREATE;
-            getActionBar().setTitle(getResources().getString(R.string.title_activity_add_record).toUpperCase());
+            getActionBar().setTitle(getResources().getString(R.string.title_add_record).toUpperCase());
         } else {
             mMode = Mode.EDIT;
-            getActionBar().setTitle(getResources().getString(R.string.title_activity_edit_record).toUpperCase());
+            getActionBar().setTitle(getResources().getString(R.string.title_edit_record).toUpperCase());
         }
 
         Tally.fetchTallyInBackground(tallyId, new GetCallback<Tally>() {

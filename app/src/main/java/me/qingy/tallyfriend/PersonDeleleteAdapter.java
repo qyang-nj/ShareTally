@@ -14,15 +14,15 @@ import me.qingy.tallyfriend.model.Person;
  */
 public class PersonDeleleteAdapter extends PersonAdapter {
 
-    private View.OnClickListener mDeleteCb;
+    private int mNumberOfUndeletablePeople = 0;
 
     public PersonDeleleteAdapter(Context context, List<Person> people) {
         super(context, people);
         setLayout(R.layout.item_text_2_del);
     }
 
-    public void setDeleteCb(View.OnClickListener cb) {
-        this.mDeleteCb = cb;
+    public void setNumberOfUndeletablePeople(int n) {
+        mNumberOfUndeletablePeople = n;
     }
 
     @Override
@@ -30,15 +30,17 @@ public class PersonDeleleteAdapter extends PersonAdapter {
         View v = super.getView(position, convertView, parent);
 
         ImageButton ib = (ImageButton) v.findViewById(R.id.del);
-        ib.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                v.setTag(getItem(position));
-                if (mDeleteCb != null) {
-                    mDeleteCb.onClick(v);
+        if (position < mNumberOfUndeletablePeople) {
+            ib.setVisibility(View.INVISIBLE);
+        } else {
+            ib.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mPeople.remove(position);
+                    notifyDataSetChanged();
                 }
-            }
-        });
+            });
+        }
         return v;
     }
 }

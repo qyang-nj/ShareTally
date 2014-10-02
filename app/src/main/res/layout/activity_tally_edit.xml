@@ -26,31 +26,12 @@
         android:lines="2"
         android:scrollbars="vertical" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_weight="2"
-            android:text="Currency"
-            android:visibility="invisible" />
-
-        <Spinner
-            android:id="@+id/currency_spinner"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
-    </LinearLayout>
-
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content" >
 
         <TextView
+            android:id="@+id/participants"
             style="?android:attr/listSeparatorTextViewStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -59,10 +40,12 @@
 
         <ImageButton
             android:id="@+id/add"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginBottom="3dp"
             android:layout_alignParentRight="true"
-            android:src="@drawable/ic_action_add_person" />
+            android:layout_alignBottom="@id/participants"
+            android:background="@drawable/button_add_user" />
     </RelativeLayout>
 
     <ListView

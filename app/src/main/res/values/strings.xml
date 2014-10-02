@@ -1,6 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="record_label_breakfast">Breakfast</string>
+    <string name="record_label_lunch">Lunch</string>
+    <string name="record_label_dinner">Dinner</string>
+    <string name="record_label_hotel">Hotel</string>
+    <string name="record_label_car_rental">"Car Rental"</string>
+    <string name="record_label_gasoline">Gasoline</string>
+    <string name="record_label_ticket">Ticket</string>
+    <string name="record_label_toll">Toll</string>
+
+    <string name="title_share_tally">"Share Tally"</string>
+    <string name="title_create_tally">"Create Tally"</string>
+    <string name="title_edit_tally">"Edit Tally"</string>
+    <string name="title_add_record">"Add Record"</string>
+    <string name="title_edit_record">"Edit Record"</string>
+
     <string name="app_name">TallyFriend</string>
     <string name="hello_world">Hello world!@!!!</string>
     <string name="action_settings">Settings</string>
@@ -28,8 +43,6 @@
     <string name="participants">Participants</string>
     <string name="all_equal">"All Equal"</string>
     <string name="payer">Payer</string>
-    <string name="title_activity_add_record">"Add Record"</string>
-    <string name="title_activity_edit_record">"Edit Record"</string>
     <string name="save_and_new">"Save and New"</string>
     <string name="calculate">Calculate</string>
     <string name="title_activity_result">ResultActivity</string>
@@ -37,14 +50,11 @@
     <string name="applied_to">Applied To</string>
     <string name="prompt_already_paid">"Already paid:"</string>
     <string name="prompt_to_pay">"Need to pay:"</string>
-
-    <string name="record_label_breakfast">Breakfast</string>
-    <string name="record_label_lunch">Lunch</string>
-    <string name="record_label_dinner">Dinner</string>
-    <string name="record_label_hotel">Hotel</string>
-    <string name="record_label_car_rental">"Car Rental"</string>
-    <string name="record_label_gasoline">Gasoline</string>
-    <string name="record_label_ticket">Ticket</string>
-    <string name="record_label_toll">Toll</string>
     <string name="help">Help</string>
+    <string name="currency">Currency</string>
+
+
+
+
+
 </resources>

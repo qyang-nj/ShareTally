@@ -3,7 +3,7 @@
     tools:context="me.qingy.tallyfriend.TallyEditActivity">
     <item
         android:id="@+id/action_save"
-        android:icon="@drawable/ic_action_accept"
+        android:icon="@android:drawable/ic_menu_save"
         android:showAsAction="always"
         android:title="Save" />
 </menu>

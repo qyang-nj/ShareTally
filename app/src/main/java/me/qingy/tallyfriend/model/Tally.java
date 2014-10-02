@@ -24,7 +24,6 @@ public class Tally extends ParseObject {
     private static final String KEY_TITLE = "title";
     private static final String KEY_DESCRIPTION = "description";
     private static final String KEY_PARTICIPANTS = "participants";
-    //private static final String KEY_CURRENCY = "currency";
     private static final String KEY_RECORDS = "records";
 
     public static void fetchTallyInBackground(String id, GetCallback<Tally> cb) {
@@ -93,6 +92,10 @@ public class Tally extends ParseObject {
         }
 
         return records;
+    }
+
+    public boolean hasRecord() {
+        return getList(KEY_RECORDS) != null;
     }
 
     public List<Person> getParticipants() {
