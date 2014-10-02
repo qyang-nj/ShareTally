@@ -1,16 +1,15 @@
 package me.qingy.tallyfriend;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ListView;
 
-import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 
@@ -24,7 +23,7 @@ import me.qingy.tallyfriend.model.Tally;
 public class RecordListActivity extends Activity {
 
     private ListView mLvRecords;
-    private Button mBtnCalculate;
+    private Menu mOptionsMenu;
 
     private Tally mTally;
     private RecordAdapter mAdapter;
@@ -42,16 +41,6 @@ public class RecordListActivity extends Activity {
                 Intent intent = new Intent(RecordListActivity.this, RecordEditActivity.class);
                 intent.putExtra("TALLY_ID", mTally.getObjectId());
                 intent.putExtra("RECORD_ID", mRecords.get(position).getObjectId());
-                startActivity(intent);
-            }
-        });
-
-        mBtnCalculate = (Button) findViewById(R.id.calculate);
-        mBtnCalculate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(RecordListActivity.this, ResultActivity.class);
-                intent.putExtra("TALLY_ID", mTally.getObjectId());
                 startActivity(intent);
             }
         });
@@ -88,6 +77,10 @@ public class RecordListActivity extends Activity {
                         mAdapter.notifyDataSetChanged();
                     }
                 }
+
+                if (mOptionsMenu != null) {
+                    mOptionsMenu.findItem(R.id.action_calculate).setVisible(mTally.hasRecord());
+                }
             }
         });
     }
@@ -95,6 +88,7 @@ public class RecordListActivity extends Activity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.record_list, menu);
+        mOptionsMenu = menu;
         return true;
     }
 
@@ -112,7 +106,19 @@ public class RecordListActivity extends Activity {
                 intent.putExtra("TALLY_ID", mTally.getObjectId());
                 startActivity(intent);
                 break;
-            case R.id.action_delete:
+            case R.id.action_delete: /* Delete the tally. */
+                new ConfirmationDialog().setArguments(getText(R.string.warning_delete_tally), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        mTally.deleteEventually();
+                        onBackPressed();
+                    }
+                }).show(getFragmentManager(), null);
+                break;
+            case R.id.action_calculate:
+                intent = new Intent(RecordListActivity.this, ResultActivity.class);
+                intent.putExtra("TALLY_ID", mTally.getObjectId());
+                startActivity(intent);
                 break;
         }
 

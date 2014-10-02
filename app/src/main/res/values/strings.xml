@@ -20,6 +20,7 @@
     <string name="title_edit_friend">"Edit a Friend"</string>
 
     <string name="warning_delete_friend">"This friend will be deleted.\nHe will still appear on the tallies as a participant."</string>
+    <string name="warning_delete_tally">"The tally and all records belonging to it will be deleted."</string>
 
     <string name="app_name">TallyFriend</string>
     <string name="hello_world">Hello world!@!!!</string>
