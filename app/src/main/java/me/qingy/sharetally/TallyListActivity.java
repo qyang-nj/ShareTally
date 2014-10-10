@@ -11,6 +11,7 @@ import android.widget.ListView;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ui.ParseLoginBuilder;
 
 import java.util.List;
 
@@ -82,6 +83,10 @@ public class TallyListActivity extends Activity {
                 Intent intent2 = new Intent(this, FriendListActivity.class);
                 ObjectHolder.reset();
                 startActivity(intent2);
+                break;
+            case R.id.action_login:
+                ParseLoginBuilder builder = new ParseLoginBuilder(this);
+                startActivityForResult(builder.build(), 0);
                 break;
         }
         return super.onOptionsItemSelected(item);

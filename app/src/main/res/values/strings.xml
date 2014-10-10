@@ -58,5 +58,6 @@
     <string name="prompt_to_pay">"Need to pay:"</string>
     <string name="help">Help</string>
     <string name="currency">Currency</string>
+    <string name="action_login">Login</string>
 
 </resources>
