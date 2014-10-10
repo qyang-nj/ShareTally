@@ -7,12 +7,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 
-import com.parse.GetCallback;
-import com.parse.ParseException;
-
 import org.apache.commons.lang3.StringUtils;
 
-import me.qingy.tallyfriend.Log.Logger;
 import me.qingy.tallyfriend.model.Person;
 
 
@@ -30,26 +26,16 @@ public class FriendEditActivity extends Activity {
         mEtName = (EditText) findViewById(R.id.person_name);
         mEtEmail = (EditText) findViewById(R.id.person_email);
 
-        String personId = getIntent().getStringExtra("PersonID");
-        if (personId == null) { /* Create */
+        mPerson = ObjectHolder.getPerson();
+        if (mPerson == null) { /* Create */
             mMode = Mode.CREATE;
             getActionBar().setTitle(getResources().getString(R.string.title_add_friend));
             mPerson = new Person();
         } else { /* Edit */
             mMode = Mode.EDIT;
             getActionBar().setTitle(getResources().getString(R.string.edit));
-            Person.fetchPersonInBackground(personId, new GetCallback<Person>() {
-                @Override
-                public void done(Person person, ParseException e) {
-                    if (e == null) {
-                        mPerson = person;
-                        mEtName.setText(mPerson.getName());
-                        mEtEmail.setText(mPerson.getEmail());
-                    } else {
-                        Logger.e(e.getMessage());
-                    }
-                }
-            });
+            mEtName.setText(mPerson.getName());
+            mEtEmail.setText(mPerson.getEmail());
         }
     }
 
@@ -78,7 +64,8 @@ public class FriendEditActivity extends Activity {
                 new ConfirmationDialog().setArguments(getText(R.string.warning_delete_friend), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        mPerson.remove();;
+                        mPerson.remove();
+                        ;
                         mPerson.pin();
                         onBackPressed();
                     }

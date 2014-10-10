@@ -2,14 +2,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="me.qingy.tallyfriend.RecordListActivity">
 
-    <item android:id="@+id/action_calculate"
+    <item
+        android:id="@+id/action_calculate"
         android:title="@string/calculate"
         android:icon="@drawable/icon_calculator"
         android:showAsAction="always" />
 
     <item
         android:id="@+id/action_edit"
-        android:icon="@drawable/ic_action_edit"
+        android:icon="@android:drawable/ic_menu_edit"
         android:showAsAction="ifRoom"
         android:title="@string/edit" />
 

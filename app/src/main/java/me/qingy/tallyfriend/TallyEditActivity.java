@@ -18,7 +18,6 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-import me.qingy.tallyfriend.Log.Logger;
 import me.qingy.tallyfriend.model.Person;
 import me.qingy.tallyfriend.model.Tally;
 
@@ -68,8 +67,8 @@ public class TallyEditActivity extends Activity {
             }
         });
 
-        String tallyId = getIntent().getStringExtra("TALLY_ID");
-        if (tallyId == null) { /* Create */
+        mTally = ObjectHolder.getTally();
+        if (mTally == null) { /* Create */
             mMode = Mode.CREATE;
             getActionBar().setTitle(getResources().getString(R.string.title_create_tally).toUpperCase());
             mTally = new Tally();
@@ -77,30 +76,15 @@ public class TallyEditActivity extends Activity {
         } else { /* Edit */
             mMode = Mode.EDIT;
             getActionBar().setTitle(getResources().getString(R.string.title_edit_tally).toUpperCase());
-            Tally.fetchTallyInBackground(tallyId, new GetCallback<Tally>() {
-                @Override
-                public void done(Tally tally, ParseException e) {
-                    if (tally.isDirty()) {
-                        try {
-                            tally.fetchFromLocalDatastore();
-                        }catch (ParseException ee) {
-                            ee.printStackTrace();
-                        }
-                    }
+            mEtTitle.setText(mTally.getTitle());
+            mEtDescription.setText(mTally.getDescription());
+            /* Make a copy of original list. */
+            mParticipants = new ArrayList<Person>() {{
+                addAll(mTally.getParticipants());
+            }};
+            mSavedNumberOfPeople = mParticipants.size();
+            setAdapter();
 
-                    if (e == null) {
-                        mTally = tally;
-                        mEtTitle.setText(mTally.getTitle());
-                        mEtDescription.setText(mTally.getDescription());
-                        /* Make a copy of original list. */
-                        mParticipants = new ArrayList<Person>() {{addAll(mTally.getParticipants());}};
-                        mSavedNumberOfPeople = mParticipants.size();
-                        setAdapter();
-                    } else {
-                        Logger.e(e.getMessage());
-                    }
-                }
-            });
         }
     }
 

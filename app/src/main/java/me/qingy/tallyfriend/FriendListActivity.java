@@ -48,7 +48,7 @@ public class FriendListActivity extends Activity {
 
                 if (Mode.DISPLAY == mMode) {
                     Intent intent = new Intent(FriendListActivity.this, FriendEditActivity.class);
-                    intent.putExtra("PersonID", p.getObjectId());
+                    ObjectHolder.setPerson(p);
                     startActivity(intent);
                 } else if (Mode.SELECTION == mMode) {
                     CheckBox cb = (CheckBox) view.findViewById(R.id.chk);
@@ -110,6 +110,7 @@ public class FriendListActivity extends Activity {
         switch (item.getItemId()) {
             case R.id.action_new:
                 intent = new Intent(this, FriendEditActivity.class);
+                ObjectHolder.reset();
                 startActivity(intent);
                 break;
             case R.id.action_done:

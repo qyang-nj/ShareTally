@@ -6,12 +6,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
 
-import com.parse.GetCallback;
-import com.parse.ParseException;
-
 import java.util.Map;
 
-import me.qingy.tallyfriend.Log.Logger;
 import me.qingy.tallyfriend.model.Person;
 import me.qingy.tallyfriend.model.Tally;
 
@@ -29,26 +25,14 @@ public class ResultActivity extends Activity {
         mLvResults = (ListView) findViewById(R.id.list);
         mLvResults.setEnabled(false); /* Disable selection */
 
-        String tallyId = getIntent().getStringExtra("TALLY_ID");
-        if (tallyId == null) {
-            throw new NullPointerException("Tally ID should not be not");
+        mTally = ObjectHolder.getTally();
+        if (mTally == null) {
+            throw new NullPointerException("Tally should not be not");
         }
 
-        Tally.fetchTallyInBackground(tallyId, new GetCallback<Tally>() {
-            @Override
-            public void done(Tally tally, ParseException e) {
-                if (e != null) {
-                    Logger.e(e.getMessage());
-                    return;
-                }
-
-                mTally = tally;
-                getActionBar().setTitle(mTally.getTitle());
-
-                Map<Person, Tally.Result> result = mTally.calculate();
-                mLvResults.setAdapter(new ResultAdapter(ResultActivity.this, mTally.getParticipants(), result));
-            }
-        });
+        getActionBar().setTitle(mTally.getTitle());
+        Map<Person, Tally.Result> result = mTally.calculate();
+        mLvResults.setAdapter(new ResultAdapter(ResultActivity.this, mTally.getParticipants(), result));
     }
 
 

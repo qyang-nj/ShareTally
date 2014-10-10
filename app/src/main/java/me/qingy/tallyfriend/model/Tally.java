@@ -76,7 +76,7 @@ public class Tally extends ParseObject {
         if (records != null) {
             for (Record r : records) {
                 try {
-                    r.fetchFromLocalDatastore();
+                    r.fetchIfNeeded();
                 } catch (ParseException e) {
                     Logger.e(e.getMessage());
                     e.printStackTrace();
@@ -95,7 +95,8 @@ public class Tally extends ParseObject {
     }
 
     public boolean hasRecord() {
-        return getList(KEY_RECORDS) != null;
+        List<Record> records = getList(KEY_RECORDS);
+        return records != null && records.size() > 0;
     }
 
     public List<Person> getParticipants() {

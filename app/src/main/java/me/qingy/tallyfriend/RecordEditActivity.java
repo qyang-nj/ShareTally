@@ -17,8 +17,6 @@ import android.widget.ListView;
 import com.doomonafireball.betterpickers.calendardatepicker.CalendarDatePickerDialog;
 import com.doomonafireball.betterpickers.numberpicker.NumberPickerBuilder;
 import com.doomonafireball.betterpickers.numberpicker.NumberPickerDialogFragment;
-import com.parse.GetCallback;
-import com.parse.ParseException;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
@@ -26,7 +24,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import me.qingy.tallyfriend.Log.Logger;
 import me.qingy.tallyfriend.model.Person;
 import me.qingy.tallyfriend.model.Record;
 import me.qingy.tallyfriend.model.Tally;
@@ -74,47 +71,22 @@ public class RecordEditActivity extends FragmentActivity
             }
         });
 
-        String tallyId = getIntent().getStringExtra("TALLY_ID");
-        if (tallyId == null) {
-            throw new NullPointerException("Tally ID should not be null.");
+        mTally = ObjectHolder.getTally();
+        if (mTally == null) {
+            throw new NullPointerException("Tally should not be null.");
         }
 
-        final String recordId = getIntent().getStringExtra("RECORD_ID");
-        if (recordId == null) {
+        mRecord = ObjectHolder.getRecord();
+        if (mRecord == null) {
             mMode = Mode.CREATE;
             getActionBar().setTitle(getResources().getString(R.string.title_add_record).toUpperCase());
+            mRecord = new Record();
         } else {
             mMode = Mode.EDIT;
             getActionBar().setTitle(getResources().getString(R.string.title_edit_record).toUpperCase());
         }
 
-        Tally.fetchTallyInBackground(tallyId, new GetCallback<Tally>() {
-            @Override
-            public void done(Tally tally, ParseException e) {
-                if (e != null) {
-                    Logger.e(e.getMessage());
-                }
-
-                mTally = tally;
-
-                if (recordId == null) {
-                    mRecord = new Record();
-                    fillData(mRecord);
-                } else {
-                    Record.fetchRecordInBackground(recordId, new GetCallback<Record>() {
-                        @Override
-                        public void done(Record record, ParseException e) {
-                            if (e == null) {
-                                mRecord = record;
-                                fillData(mRecord);
-                            } else {
-                                Logger.e(e.getMessage());
-                            }
-                        }
-                    });
-                }
-            }
-        });
+        fillData(mRecord);
     }
 
     @Override
@@ -153,6 +125,10 @@ public class RecordEditActivity extends FragmentActivity
                 mRecord = new Record();
                 fillData(mRecord);
             case R.id.action_delete:
+                mTally.delRecord(mRecord);
+                mTally.pin();
+                mRecord.deleteEventually();
+                finish();
                 break;
         }
         return super.onOptionsItemSelected(item);

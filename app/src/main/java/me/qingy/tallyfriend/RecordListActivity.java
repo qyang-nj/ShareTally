@@ -10,12 +10,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.parse.GetCallback;
-import com.parse.ParseException;
-
 import java.util.List;
 
-import me.qingy.tallyfriend.Log.Logger;
 import me.qingy.tallyfriend.model.Record;
 import me.qingy.tallyfriend.model.Tally;
 
@@ -39,50 +35,38 @@ public class RecordListActivity extends Activity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(RecordListActivity.this, RecordEditActivity.class);
-                intent.putExtra("TALLY_ID", mTally.getObjectId());
-                intent.putExtra("RECORD_ID", mRecords.get(position).getObjectId());
+                ObjectHolder.setTally(mTally);
+                ObjectHolder.setRecord(mRecords.get(position));
                 startActivity(intent);
             }
         });
+
+        mTally = ObjectHolder.getTally();
+        if (mTally == null) {
+            throw new NullPointerException("Tally should not be null.");
+        }
+
+        getActionBar().setTitle(mTally.getTitle());
     }
 
     @Override
     protected void onResume() {
         super.onResume();
 
-        String tallyId = getIntent().getStringExtra("TALLY_ID");
-        if (tallyId == null) {
-            Logger.e("Tally ID should not be null.");
-            return;
+        mRecords = mTally.getRecords();
+        if (mRecords != null) {
+            if (mAdapter == null) {
+                mAdapter = new RecordAdapter(RecordListActivity.this, mRecords);
+                mLvRecords.setAdapter(mAdapter);
+            } else {
+                mAdapter.setList(mRecords);
+                mAdapter.notifyDataSetChanged();
+            }
         }
 
-        Tally.fetchTallyInBackground(tallyId, new GetCallback<Tally>() {
-            @Override
-            public void done(Tally tally, ParseException e) {
-                if (e != null) {
-                    Logger.e(e.getMessage());
-                    return;
-                }
-
-                mTally = tally;
-                mRecords = tally.getRecords();
-                getActionBar().setTitle(mTally.getTitle());
-
-                if (mRecords != null) {
-                    if (mAdapter == null) {
-                        mAdapter = new RecordAdapter(RecordListActivity.this, mRecords);
-                        mLvRecords.setAdapter(mAdapter);
-                    } else {
-                        mAdapter.setList(mRecords);
-                        mAdapter.notifyDataSetChanged();
-                    }
-                }
-
-                if (mOptionsMenu != null) {
-                    mOptionsMenu.findItem(R.id.action_calculate).setVisible(mTally.hasRecord());
-                }
-            }
-        });
+        if (mOptionsMenu != null) {
+            mOptionsMenu.findItem(R.id.action_calculate).setVisible(mTally.hasRecord());
+        }
     }
 
     @Override
@@ -98,12 +82,13 @@ public class RecordListActivity extends Activity {
         switch (item.getItemId()) {
             case R.id.action_edit:
                 intent = new Intent(RecordListActivity.this, TallyEditActivity.class);
-                intent.putExtra("TALLY_ID", mTally.getObjectId());
+                ObjectHolder.setTally(mTally);
                 startActivity(intent);
                 break;
             case R.id.action_new:
                 intent = new Intent(RecordListActivity.this, RecordEditActivity.class);
-                intent.putExtra("TALLY_ID", mTally.getObjectId());
+                ObjectHolder.setTally(mTally);
+                ObjectHolder.resetRecord();
                 startActivity(intent);
                 break;
             case R.id.action_delete: /* Delete the tally. */
@@ -117,7 +102,7 @@ public class RecordListActivity extends Activity {
                 break;
             case R.id.action_calculate:
                 intent = new Intent(RecordListActivity.this, ResultActivity.class);
-                intent.putExtra("TALLY_ID", mTally.getObjectId());
+                ObjectHolder.setTally(mTally);
                 startActivity(intent);
                 break;
         }

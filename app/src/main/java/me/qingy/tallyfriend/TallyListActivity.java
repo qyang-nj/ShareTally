@@ -34,11 +34,9 @@ public class TallyListActivity extends Activity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Tally p = (Tally) mAdapter.getItem(position);
 
-
                 Intent intent = new Intent(TallyListActivity.this, RecordListActivity.class);
-                intent.putExtra("TALLY_ID", p.getObjectId());
+                ObjectHolder.setTally(p);
                 startActivity(intent);
-
             }
         });
     }
@@ -74,16 +72,15 @@ public class TallyListActivity extends Activity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         switch (item.getItemId()) {
             case R.id.action_new:
                 Intent intent1 = new Intent(this, TallyEditActivity.class);
+                ObjectHolder.reset();
                 startActivity(intent1);
                 break;
             case R.id.action_friends:
                 Intent intent2 = new Intent(this, FriendListActivity.class);
+                ObjectHolder.reset();
                 startActivity(intent2);
                 break;
         }
