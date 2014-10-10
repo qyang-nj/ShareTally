@@ -1,4 +1,4 @@
-package me.qingy.tallyfriend;
+package me.qingy.sharetally;
 
 import android.app.AlertDialog;
 import android.app.Dialog;

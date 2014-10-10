@@ -1,4 +1,4 @@
-package me.qingy.tallyfriend.Log;
+package me.qingy.sharetally.Log;
 
 import android.util.Log;
 

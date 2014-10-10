@@ -1,13 +1,13 @@
-package me.qingy.tallyfriend;
+package me.qingy.sharetally;
 
 import android.app.Application;
 
 import com.parse.Parse;
 import com.parse.ParseObject;
 
-import me.qingy.tallyfriend.model.Person;
-import me.qingy.tallyfriend.model.Record;
-import me.qingy.tallyfriend.model.Tally;
+import me.qingy.sharetally.model.Person;
+import me.qingy.sharetally.model.Record;
+import me.qingy.sharetally.model.Tally;
 
 /**
  * Created by YangQ on 9/17/2014.

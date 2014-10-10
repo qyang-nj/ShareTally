@@ -1,8 +1,8 @@
-package me.qingy.tallyfriend;
+package me.qingy.sharetally;
 
-import me.qingy.tallyfriend.model.Person;
-import me.qingy.tallyfriend.model.Record;
-import me.qingy.tallyfriend.model.Tally;
+import me.qingy.sharetally.model.Person;
+import me.qingy.sharetally.model.Record;
+import me.qingy.sharetally.model.Tally;
 
 /**
  * Created by YangQ on 10/10/2014.

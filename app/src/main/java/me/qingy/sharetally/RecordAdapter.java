@@ -1,4 +1,4 @@
-package me.qingy.tallyfriend;
+package me.qingy.sharetally;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import me.qingy.tallyfriend.model.Record;
+import me.qingy.sharetally.model.Record;
 
 /**
  * Created by YangQ on 9/27/2014.

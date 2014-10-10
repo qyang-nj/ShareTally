@@ -1,4 +1,4 @@
-package me.qingy.tallyfriend.model;
+package me.qingy.sharetally.model;
 
 import com.parse.GetCallback;
 import com.parse.ParseClassName;
@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import me.qingy.tallyfriend.Log.Logger;
+import me.qingy.sharetally.Log.Logger;
 
 /**
  * Created by YangQ on 9/17/2014.

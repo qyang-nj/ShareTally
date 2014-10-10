@@ -1,5 +1,4 @@
-package me.qingy.tallyfriend;
-
+package me.qingy.sharetally;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,37 +9,33 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import me.qingy.tallyfriend.model.Person;
+import me.qingy.sharetally.model.Tally;
 
 /**
- * Created by YangQ on 9/19/2014.
+ * Created by YangQ on 9/25/2014.
  */
-public class PersonAdapter extends BaseAdapter {
-    protected Context mContext;
-    protected List<Person> mPeople;
-    private int mLayoutId = android.R.layout.simple_list_item_2;
+public class TallyAdapter extends BaseAdapter {
 
-    public PersonAdapter(Context context, List<Person> people) {
+    private Context mContext;
+    private List<Tally> mTallies;
+
+    public TallyAdapter(Context context, List<Tally> tallies) {
         mContext = context;
-        mPeople = people;
+        mTallies = tallies;
     }
 
-    public void setLayout(int layoutId) {
-        mLayoutId = layoutId;
-    }
-
-    public void setList(List<Person> people) {
-        mPeople = people;
+    public void setList(List<Tally> tallies) {
+        mTallies = tallies;
     }
 
     @Override
     public int getCount() {
-        return mPeople.size();
+        return mTallies.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return mPeople.get(position);
+        return mTallies.get(position);
     }
 
     @Override
@@ -53,7 +48,7 @@ public class PersonAdapter extends BaseAdapter {
         ViewHolder vh;
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(mLayoutId, null);
+            convertView = inflater.inflate(android.R.layout.simple_list_item_2, null);
 
             vh = new ViewHolder();
             vh.text1 = (TextView) convertView.findViewById(android.R.id.text1);
@@ -63,10 +58,9 @@ public class PersonAdapter extends BaseAdapter {
             vh = (ViewHolder) convertView.getTag();
         }
 
-        vh.text1.setText(mPeople.get(position).getName());
-        if (vh.text2 != null) {
-            vh.text2.setText(mPeople.get(position).getEmail());
-        }
+        vh.text1.setText(mTallies.get(position).getTitle());
+        vh.text2.setText(mTallies.get(position).getDescription());
+
         return convertView;
     }
 

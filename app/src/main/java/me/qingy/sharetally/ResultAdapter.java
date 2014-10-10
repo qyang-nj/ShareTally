@@ -1,4 +1,4 @@
-package me.qingy.tallyfriend;
+package me.qingy.sharetally;
 
 import android.content.Context;
 import android.view.View;
@@ -9,8 +9,8 @@ import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Map;
 
-import me.qingy.tallyfriend.model.Person;
-import me.qingy.tallyfriend.model.Tally;
+import me.qingy.sharetally.model.Person;
+import me.qingy.sharetally.model.Tally;
 
 /**
  * Created by YangQ on 9/27/2014.

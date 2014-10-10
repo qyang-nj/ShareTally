@@ -1,4 +1,4 @@
-package me.qingy.tallyfriend;
+package me.qingy.sharetally;
 
 import android.content.Context;
 import android.support.v4.app.FragmentManager;
@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 
 import com.doomonafireball.betterpickers.numberpicker.NumberPickerBuilder;
 import com.doomonafireball.betterpickers.numberpicker.NumberPickerDialogFragment;
@@ -14,7 +13,7 @@ import com.doomonafireball.betterpickers.numberpicker.NumberPickerDialogFragment
 import java.text.DecimalFormat;
 import java.util.List;
 
-import me.qingy.tallyfriend.model.Person;
+import me.qingy.sharetally.model.Person;
 
 /**
  * Created by YangQ on 9/26/2014.

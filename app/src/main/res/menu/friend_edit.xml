@@ -1,6 +1,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="me.qingy.tallyfriend.FriendEditActivity">
+    tools:context="me.qingy.sharetally.FriendEditActivity">
     <item
         android:id="@+id/action_save"
         android:icon="@drawable/ic_action_accept"

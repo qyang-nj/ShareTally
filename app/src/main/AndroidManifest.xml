@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="me.qingy.tallyfriend" >
+    package="me.qingy.sharetally" >
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
-        android:name=".App"
+        android:name="me.qingy.sharetally.App"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".TallyListActivity"
+            android:name="me.qingy.sharetally.TallyListActivity"
             android:label="@string/title_share_tally" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,24 +22,24 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".TallyEditActivity"
+            android:name="me.qingy.sharetally.TallyEditActivity"
             android:label="@string/title_activity_tally_edit"
-            android:parentActivityName=".TallyListActivity" />
+            android:parentActivityName="me.qingy.sharetally.TallyListActivity" />
         <activity
-            android:name=".FriendListActivity"
+            android:name="me.qingy.sharetally.FriendListActivity"
             android:label="@string/title_friends" />
         <activity
-            android:name=".FriendEditActivity"
+            android:name="me.qingy.sharetally.FriendEditActivity"
             android:label="@string/title_activity_friend_edit"
-            android:parentActivityName=".FriendListActivity" />
+            android:parentActivityName="me.qingy.sharetally.FriendListActivity" />
         <activity
-            android:name=".RecordListActivity"
+            android:name="me.qingy.sharetally.RecordListActivity"
             android:label="" />
         <activity
-            android:name=".RecordEditActivity"
+            android:name="me.qingy.sharetally.RecordEditActivity"
             android:label="" />
         <activity
-            android:name=".ResultActivity"
+            android:name="me.qingy.sharetally.ResultActivity"
             android:label="" >
         </activity>
     </application>

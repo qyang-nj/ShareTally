@@ -1,4 +1,4 @@
-package me.qingy.tallyfriend;
+package me.qingy.sharetally;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -18,8 +18,8 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-import me.qingy.tallyfriend.model.Person;
-import me.qingy.tallyfriend.model.Tally;
+import me.qingy.sharetally.model.Person;
+import me.qingy.sharetally.model.Tally;
 
 
 public class TallyEditActivity extends Activity {

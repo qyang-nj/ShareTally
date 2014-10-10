@@ -1,4 +1,4 @@
-package me.qingy.tallyfriend;
+package me.qingy.sharetally;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -24,9 +24,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import me.qingy.tallyfriend.model.Person;
-import me.qingy.tallyfriend.model.Record;
-import me.qingy.tallyfriend.model.Tally;
+import me.qingy.sharetally.model.Person;
+import me.qingy.sharetally.model.Record;
+import me.qingy.sharetally.model.Tally;
 
 
 public class RecordEditActivity extends FragmentActivity

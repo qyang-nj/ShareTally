@@ -1,4 +1,4 @@
-package me.qingy.tallyfriend;
+package me.qingy.sharetally;
 
 import android.content.Context;
 import android.view.View;
@@ -7,7 +7,7 @@ import android.widget.ImageButton;
 
 import java.util.List;
 
-import me.qingy.tallyfriend.model.Person;
+import me.qingy.sharetally.model.Person;
 
 /**
  * Created by YangQ on 9/25/2014.

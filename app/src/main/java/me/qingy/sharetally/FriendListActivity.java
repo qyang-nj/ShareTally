@@ -1,4 +1,4 @@
-package me.qingy.tallyfriend;
+package me.qingy.sharetally;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -16,8 +16,8 @@ import com.parse.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
-import me.qingy.tallyfriend.Log.Logger;
-import me.qingy.tallyfriend.model.Person;
+import me.qingy.sharetally.Log.Logger;
+import me.qingy.sharetally.model.Person;
 
 
 public class FriendListActivity extends Activity {

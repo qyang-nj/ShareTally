@@ -1,4 +1,4 @@
-package me.qingy.tallyfriend;
+package me.qingy.sharetally;
 
 import android.app.Activity;
 import android.content.DialogInterface;
@@ -12,8 +12,8 @@ import android.widget.ListView;
 
 import java.util.List;
 
-import me.qingy.tallyfriend.model.Record;
-import me.qingy.tallyfriend.model.Tally;
+import me.qingy.sharetally.model.Record;
+import me.qingy.sharetally.model.Tally;
 
 
 public class RecordListActivity extends Activity {

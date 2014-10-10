@@ -1,4 +1,4 @@
-package me.qingy.tallyfriend;
+package me.qingy.sharetally;
 
 import android.app.Activity;
 import android.content.DialogInterface;
@@ -9,7 +9,7 @@ import android.widget.EditText;
 
 import org.apache.commons.lang3.StringUtils;
 
-import me.qingy.tallyfriend.model.Person;
+import me.qingy.sharetally.model.Person;
 
 
 public class FriendEditActivity extends Activity {
