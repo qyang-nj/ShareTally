@@ -26,7 +26,7 @@ public class Record extends ParseObject {
 
     public static void fetchRecordInBackground(String id, GetCallback<Record> cb) {
         ParseQuery<Record> query = ParseQuery.getQuery(Record.class);
-        query.fromLocalDatastore();
+        //query.fromLocalDatastore();
         query.getInBackground(id, cb);
     }
 

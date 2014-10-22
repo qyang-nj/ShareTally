@@ -63,7 +63,8 @@ public class PersonAdapter extends BaseAdapter {
             vh = (ViewHolder) convertView.getTag();
         }
 
-        vh.text1.setText(mPeople.get(position).getName());
+        String name = mPeople.get(position).getName();
+        vh.text1.setText(AppEnv.CURRENT_USER_NAME.equals(name) ? AppEnv.getCurrentPersonName() : name);
         if (vh.text2 != null) {
             vh.text2.setText(mPeople.get(position).getEmail());
         }

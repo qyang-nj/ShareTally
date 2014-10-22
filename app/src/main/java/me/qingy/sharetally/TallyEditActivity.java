@@ -118,7 +118,7 @@ public class TallyEditActivity extends Activity {
                 mTally.setTitle(mEtTitle.getText().toString());
                 mTally.setDescription(mEtDescription.getText().toString());
                 mTally.setParticipants(mParticipants);
-                mTally.pin();
+                mTally.submit();
                 onBackPressed();
                 break;
         }
@@ -148,7 +148,7 @@ public class TallyEditActivity extends Activity {
     private void setAdapter() {
         if (mParticipants == null) {
             mParticipants = new ArrayList<Person>();
-            mParticipants.add(Person.getMe());
+            mParticipants.add(AppEnv.getCurrentPerson());
         }
 
         if (mParticipantAdapter == null) {

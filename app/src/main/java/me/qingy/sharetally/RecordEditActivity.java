@@ -126,7 +126,7 @@ public class RecordEditActivity extends FragmentActivity
                 fillData(mRecord);
             case R.id.action_delete:
                 mTally.delRecord(mRecord);
-                mTally.pin();
+                mTally.submit();
                 mRecord.deleteEventually();
                 finish();
                 break;
@@ -225,7 +225,7 @@ public class RecordEditActivity extends FragmentActivity
         mRecord.setPayer(mPayer);
         mRecord.setBeneficiaryWeights(mWeights);
         mTally.addRecord(mRecord);
-        mTally.pin();
+        mTally.submit();
     }
 
     /* Payer selection */

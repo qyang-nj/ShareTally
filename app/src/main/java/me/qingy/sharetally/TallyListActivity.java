@@ -28,6 +28,8 @@ public class TallyListActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tally_list);
 
+        AppEnv.init(this);
+
         mListView = (ListView) findViewById(R.id.tally_list);
 
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

@@ -28,23 +28,16 @@ public class Tally extends ParseObject {
 
     public static void fetchTallyInBackground(String id, GetCallback<Tally> cb) {
         ParseQuery<Tally> query = ParseQuery.getQuery(Tally.class);
-        query.fromLocalDatastore();
         query.getInBackground(id, cb);
     }
 
     public static void fetchTallyListInBackground(FindCallback<Tally> cb) {
         ParseQuery<Tally> query = ParseQuery.getQuery(Tally.class);
-        query.fromLocalDatastore();
         query.findInBackground(cb);
     }
 
-    public void pin() {
-        try {
-            super.pin();
-            super.saveEventually();
-        } catch (ParseException e) {
-            Logger.e(e.getMessage());
-        }
+    public void submit() {
+        saveEventually();
     }
 
     public String getTitle() {
@@ -107,7 +100,7 @@ public class Tally extends ParseObject {
 
         for (Person p : participants) {
             try {
-                p.fetchFromLocalDatastore();
+                p.fetchIfNeeded();
             } catch (ParseException e) {
                 Logger.e(e.getMessage());
                 e.printStackTrace();

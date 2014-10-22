@@ -57,7 +57,7 @@ public class FriendEditActivity extends Activity {
                 }
                 mPerson.setName(mEtName.getText().toString());
                 mPerson.setEmail(mEtEmail.getText().toString());
-                mPerson.pin();
+                mPerson.submit();
                 onBackPressed();
                 break;
             case R.id.action_delete:
@@ -66,7 +66,7 @@ public class FriendEditActivity extends Activity {
                     public void onClick(DialogInterface dialog, int which) {
                         mPerson.remove();
                         ;
-                        mPerson.pin();
+                        mPerson.submit();
                         onBackPressed();
                     }
                 }).show(getFragmentManager(), null);
