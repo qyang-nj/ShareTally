@@ -35,7 +35,7 @@ public class Tally {
     public static final String KEY_ID = "tally_id";
 
     @DatabaseField(generatedId = true)
-    private long id;
+    private int id;
 
     @DatabaseField
     private String objId;
@@ -49,17 +49,14 @@ public class Tally {
     @DatabaseField
     private String description;
 
-    //@ForeignCollectionField(eager = true)
-    ForeignCollection<Person> participants;
-
-    //@ForeignCollectionField(eager = false)
+    @ForeignCollectionField(eager = true)
     ForeignCollection<Record> records;
 
     public Tally() {
         /* for ORMLite */
     }
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 
@@ -101,10 +98,10 @@ public class Tally {
 
     private PreparedQuery<Person> participantQuery;
 
-    public List<Person> getParticipants(RuntimeExceptionDao<Person, Integer> personDao, RuntimeExceptionDao<TallyParticipant, Long> tallyParticipantDao) {
+    public List<Person> getParticipants(RuntimeExceptionDao<Person, Integer> personDao, RuntimeExceptionDao<TallyParticipant, Integer> tallyParticipantDao) {
         try {
             if (participantQuery == null) {
-                QueryBuilder<TallyParticipant, Long> participantQb = tallyParticipantDao.queryBuilder();
+                QueryBuilder<TallyParticipant, Integer> participantQb = tallyParticipantDao.queryBuilder();
                 /* select the person id */
                 participantQb.selectColumns(TallyParticipant.FIELD_PERSON_ID);
                 SelectArg userSelectArg = new SelectArg();
@@ -122,9 +119,9 @@ public class Tally {
         return personDao.query(participantQuery);
     }
 
-    public void setParticipants(List<Person> participants, RuntimeExceptionDao<TallyParticipant, Long> tallyParticipantDao) {
+    public void setParticipants(List<Person> participants, RuntimeExceptionDao<TallyParticipant, Integer> tallyParticipantDao) {
         try {
-            DeleteBuilder<TallyParticipant, Long> delQb = tallyParticipantDao.deleteBuilder();
+            DeleteBuilder<TallyParticipant, Integer> delQb = tallyParticipantDao.deleteBuilder();
             delQb.where().eq(TallyParticipant.FIELD_TALLY_ID, getId());
             PreparedDelete<TallyParticipant> participantDel = delQb.prepare();
             tallyParticipantDao.delete(participantDel);

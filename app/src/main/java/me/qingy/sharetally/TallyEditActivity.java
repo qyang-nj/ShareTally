@@ -3,7 +3,6 @@ package me.qingy.sharetally;
 import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,12 +11,9 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
-import com.parse.GetCallback;
-import com.parse.ParseException;
 
 import org.apache.commons.lang3.StringUtils;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -74,21 +70,15 @@ public class TallyEditActivity extends OrmLiteBaseActivity<DatabaseHelper> {
             }
         });
 
-        String tallyId = getIntent().getStringExtra(Tally.KEY_ID);
+        int tallyId = getIntent().getIntExtra(Tally.KEY_ID, -1);
         //mTally = ObjectHolder.getTally();
-        if (tallyId == null) { /* Create */
+        if (tallyId < 0) { /* Create */
             mMode = Mode.CREATE;
             getActionBar().setTitle(getResources().getString(R.string.title_create_tally).toUpperCase());
             mTally = new Tally();
             setAdapter();
         } else { /* Edit */
-            try {
-                mTally = getHelper().getTallyDao().queryForId(Long.parseLong(tallyId));
-            } catch (SQLException e) {
-                Log.e(this.getClass().getName(), e.getMessage());
-                return;
-            }
-
+            mTally = getHelper().getTallyDao().queryForId(tallyId);
             mMode = Mode.EDIT;
             getActionBar().setTitle(getResources().getString(R.string.title_edit_tally).toUpperCase());
             mEtTitle.setText(mTally.getTitle());
@@ -100,7 +90,6 @@ public class TallyEditActivity extends OrmLiteBaseActivity<DatabaseHelper> {
 
             mSavedNumberOfPeople = mParticipants.size();
             setAdapter();
-
         }
     }
 
@@ -132,11 +121,8 @@ public class TallyEditActivity extends OrmLiteBaseActivity<DatabaseHelper> {
                 mTally.setTitle(mEtTitle.getText().toString());
                 mTally.setDescription(mEtDescription.getText().toString());
                 mTally.setParticipants(mParticipants, getHelper().getTallyParticipantDao());
-                try {
-                    getHelper().getTallyDao().createOrUpdate(mTally);
-                } catch (SQLException e) {
-                    Log.e(this.getClass().getName(), e.getMessage());
-                }
+                getHelper().getTallyDao().createOrUpdate(mTally);
+
                 onBackPressed();
                 break;
         }

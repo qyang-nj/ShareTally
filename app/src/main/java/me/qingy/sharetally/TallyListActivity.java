@@ -11,6 +11,7 @@ import android.widget.ListView;
 
 import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
 import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.dao.RuntimeExceptionDao;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -36,9 +37,8 @@ public class TallyListActivity extends OrmLiteBaseActivity<DatabaseHelper> {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Tally p = (Tally) mAdapter.getItem(position);
-
                 Intent intent = new Intent(TallyListActivity.this, RecordListActivity.class);
-                intent.putExtra(Tally.KEY_ID, String.valueOf(p.getId()));
+                intent.putExtra(Tally.KEY_ID, p.getId());
                 startActivity(intent);
             }
         });
@@ -50,13 +50,9 @@ public class TallyListActivity extends OrmLiteBaseActivity<DatabaseHelper> {
 
         List<Tally> tallies = null;
 
-        try {
-            Dao<Tally, Long> tallyDao = getHelper().getTallyDao();
-            tallies = tallyDao.queryForAll();
-            Log.v(this.getClass().getName(), "Fetch tallies successfully.");
-        } catch (SQLException e) {
-            Log.e(this.getClass().getName(), e.getMessage());
-        }
+        RuntimeExceptionDao<Tally, Integer> tallyDao = getHelper().getTallyDao();
+        tallies = tallyDao.queryForAll();
+        Log.v(this.getClass().getName(), "Fetch tallies successfully.");
 
         if (tallies != null) {
             if (mAdapter == null) {

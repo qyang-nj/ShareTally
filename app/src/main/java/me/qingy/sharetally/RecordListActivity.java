@@ -10,13 +10,16 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
+
 import java.util.List;
 
-import me.qingy.sharetally.model.Record;
-import me.qingy.sharetally.model.Tally;
+import me.qingy.sharetally.data.DatabaseHelper;
+import me.qingy.sharetally.data.Record;
+import me.qingy.sharetally.data.Tally;
 
 
-public class RecordListActivity extends Activity {
+public class RecordListActivity extends OrmLiteBaseActivity<DatabaseHelper> {
 
     private ListView mLvRecords;
     private Menu mOptionsMenu;
@@ -35,17 +38,18 @@ public class RecordListActivity extends Activity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(RecordListActivity.this, RecordEditActivity.class);
-                ObjectHolder.setTally(mTally);
-                ObjectHolder.setRecord(mRecords.get(position));
+                intent.putExtra(Tally.KEY_ID, mTally.getId());
+                intent.putExtra(Record.KEY_ID, mRecords.get(position).getId());
                 startActivity(intent);
             }
         });
 
-        mTally = ObjectHolder.getTally();
-        if (mTally == null) {
+        int tallyId = getIntent().getIntExtra(Tally.KEY_ID, -1);
+        if (tallyId < 0) {
             throw new NullPointerException("Tally should not be null.");
         }
 
+        mTally = getHelper().getTallyDao().queryForId(tallyId);
         getActionBar().setTitle(mTally.getTitle());
     }
 
@@ -53,6 +57,7 @@ public class RecordListActivity extends Activity {
     protected void onResume() {
         super.onResume();
 
+        getHelper().getTallyDao().refresh(mTally);
         mRecords = mTally.getRecords();
         if (mRecords != null) {
             if (mAdapter == null) {
@@ -82,27 +87,26 @@ public class RecordListActivity extends Activity {
         switch (item.getItemId()) {
             case R.id.action_edit:
                 intent = new Intent(RecordListActivity.this, TallyEditActivity.class);
-                ObjectHolder.setTally(mTally);
+                intent.putExtra(Tally.KEY_ID, mTally.getId());
                 startActivity(intent);
                 break;
             case R.id.action_new:
                 intent = new Intent(RecordListActivity.this, RecordEditActivity.class);
-                ObjectHolder.setTally(mTally);
-                ObjectHolder.resetRecord();
+                intent.putExtra(Tally.KEY_ID, mTally.getId());
                 startActivity(intent);
                 break;
             case R.id.action_delete: /* Delete the tally. */
                 new ConfirmationDialog().setArguments(getText(R.string.warning_delete_tally), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        mTally.deleteEventually();
+                        getHelper().getTallyDao().delete(mTally);
                         onBackPressed();
                     }
                 }).show(getFragmentManager(), null);
                 break;
             case R.id.action_calculate:
                 intent = new Intent(RecordListActivity.this, ResultActivity.class);
-                ObjectHolder.setTally(mTally);
+                intent.putExtra(Tally.KEY_ID, mTally.getId());
                 startActivity(intent);
                 break;
         }

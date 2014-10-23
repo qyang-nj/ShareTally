@@ -17,13 +17,13 @@ import java.util.List;
  * Created by qing on 10/21/14.
  */
 public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3;
     private static final String DATABASE_NAME = "shareTally";
 
-    private Dao<Tally, Long> tallyDao = null;
+    private RuntimeExceptionDao<Tally, Integer> tallyDao = null;
     private RuntimeExceptionDao<Person, Integer> personDao = null;
-    private Dao<Record, Long> recordDao = null;
-    private RuntimeExceptionDao<TallyParticipant, Long> tallyParticipantDao = null;
+    private RuntimeExceptionDao<Record, Integer> recordDao = null;
+    private RuntimeExceptionDao<TallyParticipant, Integer> tallyParticipantDao = null;
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -75,9 +75,9 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
         return getPersonDao().queryForId(1);
     }
 
-    public Dao<Tally, Long> getTallyDao() throws SQLException {
+    public RuntimeExceptionDao<Tally, Integer> getTallyDao() {
         if (tallyDao == null) {
-            tallyDao = getDao(Tally.class);
+            tallyDao = getRuntimeExceptionDao(Tally.class);
         }
         return tallyDao;
     }
@@ -89,14 +89,14 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
         return personDao;
     }
 
-    public Dao<Record, Long> getRecordDao() throws SQLException {
+    public RuntimeExceptionDao<Record, Integer> getRecordDao(){
         if (recordDao == null) {
-            recordDao = getDao(Record.class);
+            recordDao = getRuntimeExceptionDao(Record.class);
         }
         return recordDao;
     }
 
-    public RuntimeExceptionDao<TallyParticipant, Long> getTallyParticipantDao() {
+    public RuntimeExceptionDao<TallyParticipant, Integer> getTallyParticipantDao() {
         if (tallyParticipantDao == null) {
             tallyParticipantDao = getRuntimeExceptionDao(TallyParticipant.class);
         }

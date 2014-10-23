@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
@@ -17,6 +18,8 @@ import android.widget.ListView;
 import com.doomonafireball.betterpickers.calendardatepicker.CalendarDatePickerDialog;
 import com.doomonafireball.betterpickers.numberpicker.NumberPickerBuilder;
 import com.doomonafireball.betterpickers.numberpicker.NumberPickerDialogFragment;
+import com.j256.ormlite.android.apptools.OpenHelperManager;
+import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
@@ -24,9 +27,10 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import me.qingy.sharetally.model.Person;
-import me.qingy.sharetally.model.Record;
-import me.qingy.sharetally.model.Tally;
+import me.qingy.sharetally.data.DatabaseHelper;
+import me.qingy.sharetally.data.Person;
+import me.qingy.sharetally.data.Record;
+import me.qingy.sharetally.data.Tally;
 
 
 public class RecordEditActivity extends FragmentActivity
@@ -49,6 +53,7 @@ public class RecordEditActivity extends FragmentActivity
     private Record mRecord;
     private PersonWeightAdapter mParticipantAdapter;
     private Mode mMode;
+    private DatabaseHelper databaseHelper = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,23 +72,25 @@ public class RecordEditActivity extends FragmentActivity
         findViewById(R.id.label_list).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new LabelListDialogFragment().show(getSupportFragmentManager(), "123");
+                new LabelListDialogFragment().show(getSupportFragmentManager(), null);
             }
         });
 
-        mTally = ObjectHolder.getTally();
-        if (mTally == null) {
+        int tallyId = getIntent().getIntExtra(Tally.KEY_ID, -1);
+        if (tallyId < 0) {
             throw new NullPointerException("Tally should not be null.");
         }
+        mTally = getHelper().getTallyDao().queryForId(tallyId);
 
-        mRecord = ObjectHolder.getRecord();
-        if (mRecord == null) {
+        int recordId = getIntent().getIntExtra(Record.KEY_ID, -1);
+        if (recordId < 0) {
             mMode = Mode.CREATE;
             getActionBar().setTitle(getResources().getString(R.string.title_add_record).toUpperCase());
             mRecord = new Record();
         } else {
             mMode = Mode.EDIT;
             getActionBar().setTitle(getResources().getString(R.string.title_edit_record).toUpperCase());
+            mRecord = getHelper().getRecordDao().queryForId(recordId);
         }
 
         fillData(mRecord);
@@ -126,8 +133,8 @@ public class RecordEditActivity extends FragmentActivity
                 fillData(mRecord);
             case R.id.action_delete:
                 mTally.delRecord(mRecord);
-                mTally.submit();
-                mRecord.deleteEventually();
+                //mTally.submit();
+                //mRecord.deleteEventually();
                 finish();
                 break;
         }
@@ -145,12 +152,38 @@ public class RecordEditActivity extends FragmentActivity
         mBtnDate.setText(DateFormat.getDateInstance().format(mDate));
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (databaseHelper != null) {
+            OpenHelperManager.releaseHelper();
+            databaseHelper = null;
+        }
+    }
+
+    private DatabaseHelper getHelper() {
+        if (databaseHelper == null) {
+            databaseHelper = OpenHelperManager.getHelper(this, DatabaseHelper.class);
+        }
+        return databaseHelper;
+    }
+
     /* Before this function is invoked, tally and record should be ready. */
     private void fillData(Record r) {
         /* Set amount */
         mAmount = r.getAmount();
         mBtnAmount.setText(((Double) mAmount).toString());
         mBtnAmount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NumberPickerBuilder npb = new NumberPickerBuilder()
+                        .setFragmentManager(getSupportFragmentManager())
+                        .setPlusMinusVisibility(View.INVISIBLE)
+                        .setStyleResId(R.style.BetterPickersDialogFragment_Light)
+                        .addNumberPickerDialogHandler(new AmountSetCallback());
+                npb.show();
+            }
+        });        mBtnAmount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 NumberPickerBuilder npb = new NumberPickerBuilder()
@@ -180,7 +213,7 @@ public class RecordEditActivity extends FragmentActivity
         });
 
         /* Set participants */
-        mParticipants = mTally.getParticipants();
+        mParticipants = mTally.getParticipants(getHelper().getPersonDao(), getHelper().getTallyParticipantDao());
         if (mParticipants == null) {
             throw new NullPointerException("Participants should not be null.");
         }
@@ -199,7 +232,7 @@ public class RecordEditActivity extends FragmentActivity
         });
 
         /* Set weights */
-        mWeights = r.getBeneficiaryWeights();
+       // mWeights = r.getBeneficiaryWeights();
         if (mWeights == null) {
             mWeights = new ArrayList<Double>() {{
                 for (int i = 0; i < mParticipants.size(); ++i) {
@@ -214,7 +247,7 @@ public class RecordEditActivity extends FragmentActivity
             mWeights.add(0.0);
         }
 
-        //mParticipantAdapter = new PersonWeightAdapter(RecordEditActivity.this, mParticipants, mWeights, getSupportFragmentManager());
+        mParticipantAdapter = new PersonWeightAdapter(RecordEditActivity.this, mParticipants, mWeights, getSupportFragmentManager());
         mLvWeights.setAdapter(mParticipantAdapter);
     }
 
@@ -223,9 +256,14 @@ public class RecordEditActivity extends FragmentActivity
         mRecord.setCaption(mEtLabel.getText().toString());
         mRecord.setDate(mDate);
         mRecord.setPayer(mPayer);
-        mRecord.setBeneficiaryWeights(mWeights);
-        mTally.addRecord(mRecord);
-        mTally.submit();
+        //mRecord.setBeneficiaryWeights(mWeights);
+
+        if (mRecord.getId() == Record.ID_NEW) {
+            mTally.addRecord(mRecord);
+            getHelper().getTallyDao().update(mTally);
+        } else {
+            getHelper().getRecordDao().update(mRecord);
+        }
     }
 
     /* Payer selection */
@@ -233,8 +271,8 @@ public class RecordEditActivity extends FragmentActivity
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            //builder.setTitle(getResources().getString(R.string.payer))
-            //        .setAdapter(new PersonNameAdapter(RecordEditActivity.this, mParticipants), new PayerSelectedCallback());
+            builder.setTitle(getResources().getString(R.string.payer))
+                    .setAdapter(new PersonNameAdapter(RecordEditActivity.this, mParticipants), new PayerSelectedCallback());
             return builder.create();
         }
     }
