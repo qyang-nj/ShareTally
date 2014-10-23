@@ -22,8 +22,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import me.qingy.sharetally.data.DatabaseHelper;
+import me.qingy.sharetally.data.Person;
 import me.qingy.sharetally.data.Tally;
-import me.qingy.sharetally.model.Person;
 
 public class TallyEditActivity extends OrmLiteBaseActivity<DatabaseHelper> {
     static private final int ADD_PARTICIPANT_REQ_ID = 1;
@@ -61,10 +61,10 @@ public class TallyEditActivity extends OrmLiteBaseActivity<DatabaseHelper> {
                 Intent intent = new Intent(TallyEditActivity.this, FriendListActivity.class);
                 intent.putExtra("MODE", FriendListActivity.Mode.SELECTION.toString());
                 if (mParticipants != null) {
-                    intent.putStringArrayListExtra("EXCLUDED_IDS", new ArrayList<String>() {
+                    intent.putIntegerArrayListExtra("EXCLUDED_IDS", new ArrayList<Integer>() {
                         {
                             for (Person p : mParticipants) {
-                                add(p.getObjectId());
+                                add(p.getId());
                             }
                         }
                     });
@@ -94,9 +94,9 @@ public class TallyEditActivity extends OrmLiteBaseActivity<DatabaseHelper> {
             mEtTitle.setText(mTally.getTitle());
             mEtDescription.setText(mTally.getDescription());
             /* Make a copy of original list. */
-//            mParticipants = new ArrayList<Person>() {{
-//                addAll(mTally.getParticipants());
-//            }};
+            mParticipants = new ArrayList<Person>() {{
+                addAll(mTally.getParticipants(getHelper().getPersonDao(), getHelper().getTallyParticipantDao()));
+            }};
 
             mSavedNumberOfPeople = mParticipants.size();
             setAdapter();
@@ -131,7 +131,7 @@ public class TallyEditActivity extends OrmLiteBaseActivity<DatabaseHelper> {
                 }
                 mTally.setTitle(mEtTitle.getText().toString());
                 mTally.setDescription(mEtDescription.getText().toString());
-                //mTally.setParticipants(mParticipants);
+                mTally.setParticipants(mParticipants, getHelper().getTallyParticipantDao());
                 try {
                     getHelper().getTallyDao().createOrUpdate(mTally);
                 } catch (SQLException e) {
@@ -148,17 +148,13 @@ public class TallyEditActivity extends OrmLiteBaseActivity<DatabaseHelper> {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == ADD_PARTICIPANT_REQ_ID) {
             if (resultCode == RESULT_OK) {
-                ArrayList<String> selectedItems = data.getStringArrayListExtra("SELECTED_ITEMS");
+                ArrayList<Integer> selectedItems = data.getIntegerArrayListExtra("SELECTED_ITEMS");
 
-                for (String objId : selectedItems) {
-                    Person.fetchPersonInBackground(objId, new GetCallback<Person>() {
-                        @Override
-                        public void done(Person person, ParseException e) {
-                            mParticipants.add(person);
-                            mParticipantAdapter.notifyDataSetChanged();
-                        }
-                    });
+                for (int id : selectedItems) {
+                    Person person = getHelper().getPersonDao().queryForId(id);
+                    mParticipants.add(person);
                 }
+                mParticipantAdapter.notifyDataSetChanged();
             }
         }
     }
@@ -166,7 +162,7 @@ public class TallyEditActivity extends OrmLiteBaseActivity<DatabaseHelper> {
     private void setAdapter() {
         if (mParticipants == null) {
             mParticipants = new ArrayList<Person>();
-            //mParticipants.add(AppEnv.getCurrentPerson());
+            mParticipants.add(getHelper().getCurrentPerson());
         }
 
         if (mParticipantAdapter == null) {

@@ -1,11 +1,19 @@
 package me.qingy.sharetally.data;
 
+import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.ForeignCollection;
+import com.j256.ormlite.dao.RuntimeExceptionDao;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.field.ForeignCollectionField;
+import com.j256.ormlite.stmt.DeleteBuilder;
+import com.j256.ormlite.stmt.PreparedDelete;
+import com.j256.ormlite.stmt.PreparedQuery;
+import com.j256.ormlite.stmt.QueryBuilder;
+import com.j256.ormlite.stmt.SelectArg;
 import com.j256.ormlite.table.DatabaseTable;
 import com.parse.ParseException;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -91,17 +99,42 @@ public class Tally {
         return records != null && records.size() > 0;
     }
 
-    public List<Person> getParticipants() {
-        return new ArrayList<Person>() {
-            {
-                addAll(participants);
+    private PreparedQuery<Person> participantQuery;
+
+    public List<Person> getParticipants(RuntimeExceptionDao<Person, Integer> personDao, RuntimeExceptionDao<TallyParticipant, Long> tallyParticipantDao) {
+        try {
+            if (participantQuery == null) {
+                QueryBuilder<TallyParticipant, Long> participantQb = tallyParticipantDao.queryBuilder();
+                /* select the person id */
+                participantQb.selectColumns(TallyParticipant.FIELD_PERSON_ID);
+                SelectArg userSelectArg = new SelectArg();
+                participantQb.where().eq(TallyParticipant.FIELD_TALLY_ID, userSelectArg);
+
+                QueryBuilder<Person, Integer> personQb = personDao.queryBuilder();
+                personQb.where().in(Person.FIELD_ID, participantQb);
+                participantQuery = personQb.prepare();
             }
-        };
+            participantQuery.setArgumentHolderValue(0, this);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
+        return personDao.query(participantQuery);
     }
 
-    public void setParticipants(List<Person> participants) {
-        this.participants.clear();
-        this.participants.addAll(participants);
+    public void setParticipants(List<Person> participants, RuntimeExceptionDao<TallyParticipant, Long> tallyParticipantDao) {
+        try {
+            DeleteBuilder<TallyParticipant, Long> delQb = tallyParticipantDao.deleteBuilder();
+            delQb.where().eq(TallyParticipant.FIELD_TALLY_ID, getId());
+            PreparedDelete<TallyParticipant> participantDel = delQb.prepare();
+            tallyParticipantDao.delete(participantDel);
+        } catch (SQLException e) {
+            return;
+        }
+
+        for (Person p : participants) {
+            tallyParticipantDao.create(new TallyParticipant(this, p));
+        }
     }
 
     public Map<Person, Result> calculate() {

@@ -10,10 +10,11 @@ import com.j256.ormlite.table.DatabaseTable;
 @DatabaseTable
 public class TallyParticipant {
 
+    public static final String FIELD_ID = "id";
     public final static String FIELD_TALLY_ID = "user_id";
     public final static String FIELD_PERSON_ID = "post_id";
 
-    @DatabaseField(generatedId = true)
+    @DatabaseField(generatedId = true, columnName = FIELD_ID)
     private long id;
 
     @DatabaseField(foreign = true, columnName = FIELD_TALLY_ID)

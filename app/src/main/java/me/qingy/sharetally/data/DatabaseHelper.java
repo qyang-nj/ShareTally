@@ -6,22 +6,24 @@ import android.util.Log;
 
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.dao.RuntimeExceptionDao;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 
 import java.sql.SQLException;
+import java.util.List;
 
 /**
  * Created by qing on 10/21/14.
  */
 public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
     private static final String DATABASE_NAME = "shareTally";
 
     private Dao<Tally, Long> tallyDao = null;
-    private Dao<Person, Long> personDao = null;
+    private RuntimeExceptionDao<Person, Integer> personDao = null;
     private Dao<Record, Long> recordDao = null;
-    private Dao<TallyParticipant, Long> tallyParticipantDao = null;
+    private RuntimeExceptionDao<TallyParticipant, Long> tallyParticipantDao = null;
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -39,6 +41,11 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
             Log.e(DatabaseHelper.class.getName(), "Can't create database", e);
             throw new RuntimeException(e);
         }
+
+        Person currPerson = new Person();
+        currPerson.setName("__CURRENT_PERSON__");
+        getPersonDao().create(currPerson);
+        Log.v(this.getClass().getName(), "Default user created.");
     }
 
     @Override
@@ -64,6 +71,10 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
         recordDao = null;
     }
 
+    public Person getCurrentPerson() {
+        return getPersonDao().queryForId(1);
+    }
+
     public Dao<Tally, Long> getTallyDao() throws SQLException {
         if (tallyDao == null) {
             tallyDao = getDao(Tally.class);
@@ -71,9 +82,9 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
         return tallyDao;
     }
 
-    public Dao<Person, Long> getPersonDao() throws SQLException {
+    public RuntimeExceptionDao<Person, Integer> getPersonDao(){
         if (personDao == null) {
-            personDao = getDao(Person.class);
+            personDao = getRuntimeExceptionDao(Person.class);
         }
         return personDao;
     }
@@ -85,9 +96,9 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
         return recordDao;
     }
 
-    public Dao<TallyParticipant, Long> getTallyParticipantDao() throws SQLException {
+    public RuntimeExceptionDao<TallyParticipant, Long> getTallyParticipantDao() {
         if (tallyParticipantDao == null) {
-            tallyParticipantDao = getDao(TallyParticipant.class);
+            tallyParticipantDao = getRuntimeExceptionDao(TallyParticipant.class);
         }
         return tallyParticipantDao;
     }

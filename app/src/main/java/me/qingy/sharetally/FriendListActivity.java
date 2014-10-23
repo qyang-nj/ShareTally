@@ -10,6 +10,8 @@ import android.widget.AdapterView;
 import android.widget.CheckBox;
 import android.widget.ListView;
 
+import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
+import com.j256.ormlite.dao.RuntimeExceptionDao;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 
@@ -17,16 +19,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import me.qingy.sharetally.Log.Logger;
-import me.qingy.sharetally.model.Person;
+import me.qingy.sharetally.data.DatabaseHelper;
+import me.qingy.sharetally.data.Person;
 
 
-public class FriendListActivity extends Activity {
+public class FriendListActivity extends OrmLiteBaseActivity<DatabaseHelper> {
 
     private PersonAdapter mAdapter;
     private ListView mListView;
     private Mode mMode = Mode.DISPLAY;
-    private ArrayList<String> mSelectedItem = new ArrayList<String>();
-    private ArrayList<String> mExcludedItem;
+    private ArrayList<Integer> mSelectedItem = new ArrayList<Integer>();
+    private ArrayList<Integer> mExcludedItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +41,7 @@ public class FriendListActivity extends Activity {
             mMode = Enum.valueOf(Mode.class, mode);
         }
 
-        mExcludedItem = getIntent().getStringArrayListExtra("EXCLUDED_IDS");
+        mExcludedItem = getIntent().getIntegerArrayListExtra("EXCLUDED_IDS");
 
         mListView = (ListView) findViewById(R.id.friend_list);
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -48,7 +51,7 @@ public class FriendListActivity extends Activity {
 
                 if (Mode.DISPLAY == mMode) {
                     Intent intent = new Intent(FriendListActivity.this, FriendEditActivity.class);
-                    ObjectHolder.setPerson(p);
+                    //ObjectHolder.setPerson(p);
                     startActivity(intent);
                 } else if (Mode.SELECTION == mMode) {
                     CheckBox cb = (CheckBox) view.findViewById(R.id.chk);
@@ -56,10 +59,10 @@ public class FriendListActivity extends Activity {
                     cb.setChecked(checked);
                     if (checked) {
                         Logger.d("Add " + p.getName());
-                        mSelectedItem.add(p.getObjectId());
+                        mSelectedItem.add(p.getId());
                     } else {
                         Logger.d("Remove " + p.getName());
-                        mSelectedItem.remove(p.getObjectId());
+                        mSelectedItem.remove(p.getId());
                     }
                 }
             }
@@ -69,26 +72,21 @@ public class FriendListActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        Person.fetchPersonListInBackground(new FindCallback<Person>() {
-            public void done(List<Person> people, ParseException e) {
-                if (e != null) {
-                    Logger.e(e.getMessage());
-                    return;
-                }
+        List<Person> people = getHelper().getPersonDao().queryForAll();
 
-                if (mAdapter == null) {
-                    mAdapter = new PersonAdapter(FriendListActivity.this, people);
-                    if (mMode == Mode.SELECTION) {
-                        mAdapter.setLayout(R.layout.item_text_2_check);
-                    }
-                    mListView.setAdapter(mAdapter);
-                } else {
-                    mAdapter.setList(people);
-                    mAdapter.notifyDataSetChanged();
+        if (people != null) {
+            if (mAdapter == null) {
+                mAdapter = new PersonAdapter(FriendListActivity.this, people);
+                if (mMode == Mode.SELECTION) {
+                    mAdapter.setLayout(R.layout.item_text_2_check);
                 }
-                Logger.d("Fetch data done.");
+                mListView.setAdapter(mAdapter);
+            } else {
+                mAdapter.setList(people);
+                mAdapter.notifyDataSetChanged();
             }
-        }, mExcludedItem);
+            Logger.d("Fetch data done.");
+        }
     }
 
     @Override
@@ -115,7 +113,7 @@ public class FriendListActivity extends Activity {
                 break;
             case R.id.action_done:
                 Intent resultData = new Intent();
-                resultData.putStringArrayListExtra("SELECTED_ITEMS", mSelectedItem);
+                resultData.putIntegerArrayListExtra("SELECTED_ITEMS", mSelectedItem);
                 setResult(Activity.RESULT_OK, resultData);
                 finish();
                 return true;

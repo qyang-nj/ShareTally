@@ -9,8 +9,9 @@ import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Map;
 
-import me.qingy.sharetally.model.Person;
-import me.qingy.sharetally.model.Tally;
+import me.qingy.sharetally.data.Person;
+import me.qingy.sharetally.data.Tally;
+
 
 /**
  * Created by YangQ on 9/27/2014.

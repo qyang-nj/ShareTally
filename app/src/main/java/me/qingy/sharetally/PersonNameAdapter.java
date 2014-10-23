@@ -4,7 +4,8 @@ import android.content.Context;
 
 import java.util.List;
 
-import me.qingy.sharetally.model.Person;
+import me.qingy.sharetally.data.Person;
+
 
 /**
  * Created by YangQ on 9/26/2014.

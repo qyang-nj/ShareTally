@@ -12,8 +12,10 @@ import java.util.Date;
 @DatabaseTable
 public class Person {
 
-    @DatabaseField(generatedId = true)
-    private long id;
+    public static final String FIELD_ID = "id";
+
+    @DatabaseField(generatedId = true, columnName = FIELD_ID)
+    private int id;
 
     @DatabaseField
     private String objId;
@@ -27,8 +29,15 @@ public class Person {
     @DatabaseField
     private String email;
 
+    @DatabaseField
+    private boolean removed;
+
     public Person() {
         /* for ORMLite */
+    }
+
+    public int getId() {
+        return id;
     }
 
     public void setName(String name) {
@@ -45,5 +54,9 @@ public class Person {
 
     public String  getEmail() {
         return email;
+    }
+
+    public void remove() {
+        removed = true;
     }
 }

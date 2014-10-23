@@ -214,7 +214,7 @@ public class RecordEditActivity extends FragmentActivity
             mWeights.add(0.0);
         }
 
-        mParticipantAdapter = new PersonWeightAdapter(RecordEditActivity.this, mParticipants, mWeights, getSupportFragmentManager());
+        //mParticipantAdapter = new PersonWeightAdapter(RecordEditActivity.this, mParticipants, mWeights, getSupportFragmentManager());
         mLvWeights.setAdapter(mParticipantAdapter);
     }
 
@@ -233,8 +233,8 @@ public class RecordEditActivity extends FragmentActivity
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            builder.setTitle(getResources().getString(R.string.payer))
-                    .setAdapter(new PersonNameAdapter(RecordEditActivity.this, mParticipants), new PayerSelectedCallback());
+            //builder.setTitle(getResources().getString(R.string.payer))
+            //        .setAdapter(new PersonNameAdapter(RecordEditActivity.this, mParticipants), new PayerSelectedCallback());
             return builder.create();
         }
     }

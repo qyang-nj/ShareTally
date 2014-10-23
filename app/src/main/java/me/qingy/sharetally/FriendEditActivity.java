@@ -1,18 +1,20 @@
 package me.qingy.sharetally;
 
-import android.app.Activity;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 
+import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
+
 import org.apache.commons.lang3.StringUtils;
 
-import me.qingy.sharetally.model.Person;
+import me.qingy.sharetally.data.DatabaseHelper;
+import me.qingy.sharetally.data.Person;
 
 
-public class FriendEditActivity extends Activity {
+public class FriendEditActivity extends OrmLiteBaseActivity<DatabaseHelper> {
     private Person mPerson;
     private EditText mEtName;
     private EditText mEtEmail;
@@ -26,7 +28,7 @@ public class FriendEditActivity extends Activity {
         mEtName = (EditText) findViewById(R.id.person_name);
         mEtEmail = (EditText) findViewById(R.id.person_email);
 
-        mPerson = ObjectHolder.getPerson();
+        //mPerson = ObjectHolder.getPerson();
         if (mPerson == null) { /* Create */
             mMode = Mode.CREATE;
             getActionBar().setTitle(getResources().getString(R.string.title_add_friend));
@@ -57,7 +59,7 @@ public class FriendEditActivity extends Activity {
                 }
                 mPerson.setName(mEtName.getText().toString());
                 mPerson.setEmail(mEtEmail.getText().toString());
-                mPerson.submit();
+                getHelper().getPersonDao().createOrUpdate(mPerson);
                 onBackPressed();
                 break;
             case R.id.action_delete:
@@ -65,8 +67,7 @@ public class FriendEditActivity extends Activity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         mPerson.remove();
-                        ;
-                        mPerson.submit();
+                        getHelper().getPersonDao().createOrUpdate(mPerson);
                         onBackPressed();
                     }
                 }).show(getFragmentManager(), null);

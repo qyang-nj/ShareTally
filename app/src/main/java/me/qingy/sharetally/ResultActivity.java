@@ -32,7 +32,7 @@ public class ResultActivity extends Activity {
 
         getActionBar().setTitle(mTally.getTitle());
         Map<Person, Tally.Result> result = mTally.calculate();
-        mLvResults.setAdapter(new ResultAdapter(ResultActivity.this, mTally.getParticipants(), result));
+        //mLvResults.setAdapter(new ResultAdapter(ResultActivity.this, mTally.getParticipants(), result));
     }
 
 
