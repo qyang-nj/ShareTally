@@ -1,8 +1,9 @@
 package me.qingy.sharetally;
 
-import android.app.Activity;
+import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -10,19 +11,21 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import me.qingy.sharetally.data.DatabaseHelper;
+import me.qingy.sharetally.data.Tally;
 import me.qingy.sharetally.model.Person;
-import me.qingy.sharetally.model.Tally;
 
-
-public class TallyEditActivity extends Activity {
+public class TallyEditActivity extends OrmLiteBaseActivity<DatabaseHelper> {
     static private final int ADD_PARTICIPANT_REQ_ID = 1;
 
     private EditText mEtTitle;
@@ -31,7 +34,7 @@ public class TallyEditActivity extends Activity {
 
     private Mode mMode = Mode.CREATE;
     private Tally mTally;
-    private PersonDeleleteAdapter mParticipantAdapter;
+    private PersonDeleteAdapter mParticipantAdapter;
     private List<Person> mParticipants;
     private int mSavedNumberOfPeople = 0;
 
@@ -40,7 +43,11 @@ public class TallyEditActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tally_edit);
 
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+        ActionBar ab = getActionBar();
+        if (ab != null) {
+            ab.setDisplayHomeAsUpEnabled(true);
+        }
+
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
         /* wire up */
@@ -67,21 +74,30 @@ public class TallyEditActivity extends Activity {
             }
         });
 
-        mTally = ObjectHolder.getTally();
-        if (mTally == null) { /* Create */
+        String tallyId = getIntent().getStringExtra(Tally.KEY_ID);
+        //mTally = ObjectHolder.getTally();
+        if (tallyId == null) { /* Create */
             mMode = Mode.CREATE;
             getActionBar().setTitle(getResources().getString(R.string.title_create_tally).toUpperCase());
             mTally = new Tally();
             setAdapter();
         } else { /* Edit */
+            try {
+                mTally = getHelper().getTallyDao().queryForId(Long.parseLong(tallyId));
+            } catch (SQLException e) {
+                Log.e(this.getClass().getName(), e.getMessage());
+                return;
+            }
+
             mMode = Mode.EDIT;
             getActionBar().setTitle(getResources().getString(R.string.title_edit_tally).toUpperCase());
             mEtTitle.setText(mTally.getTitle());
             mEtDescription.setText(mTally.getDescription());
             /* Make a copy of original list. */
-            mParticipants = new ArrayList<Person>() {{
-                addAll(mTally.getParticipants());
-            }};
+//            mParticipants = new ArrayList<Person>() {{
+//                addAll(mTally.getParticipants());
+//            }};
+
             mSavedNumberOfPeople = mParticipants.size();
             setAdapter();
 
@@ -101,9 +117,7 @@ public class TallyEditActivity extends Activity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+
         switch (item.getItemId()) {
             // Respond to the action bar's Up/Home button
             case android.R.id.home:
@@ -117,8 +131,12 @@ public class TallyEditActivity extends Activity {
                 }
                 mTally.setTitle(mEtTitle.getText().toString());
                 mTally.setDescription(mEtDescription.getText().toString());
-                mTally.setParticipants(mParticipants);
-                mTally.submit();
+                //mTally.setParticipants(mParticipants);
+                try {
+                    getHelper().getTallyDao().createOrUpdate(mTally);
+                } catch (SQLException e) {
+                    Log.e(this.getClass().getName(), e.getMessage());
+                }
                 onBackPressed();
                 break;
         }
@@ -148,11 +166,11 @@ public class TallyEditActivity extends Activity {
     private void setAdapter() {
         if (mParticipants == null) {
             mParticipants = new ArrayList<Person>();
-            mParticipants.add(AppEnv.getCurrentPerson());
+            //mParticipants.add(AppEnv.getCurrentPerson());
         }
 
         if (mParticipantAdapter == null) {
-            mParticipantAdapter = new PersonDeleleteAdapter(this, mParticipants);
+            mParticipantAdapter = new PersonDeleteAdapter(this, mParticipants);
             mLvParticipants.setAdapter(mParticipantAdapter);
 
             /* If a tally already has one or more records, current participants are not allowed to be deleted. */

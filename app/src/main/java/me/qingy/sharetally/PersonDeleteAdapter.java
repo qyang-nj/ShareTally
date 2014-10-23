@@ -12,11 +12,11 @@ import me.qingy.sharetally.model.Person;
 /**
  * Created by YangQ on 9/25/2014.
  */
-public class PersonDeleleteAdapter extends PersonAdapter {
+public class PersonDeleteAdapter extends PersonAdapter {
 
     private int mNumberOfUndeletablePeople = 0;
 
-    public PersonDeleleteAdapter(Context context, List<Person> people) {
+    public PersonDeleteAdapter(Context context, List<Person> people) {
         super(context, people);
         setLayout(R.layout.item_text_2_del);
     }

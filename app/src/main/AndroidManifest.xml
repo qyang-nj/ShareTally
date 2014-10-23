@@ -17,10 +17,6 @@
             android:name=".DispatchActivity"
             android:label="@string/app_name"
             android:launchMode="singleTop">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
         </activity>
 
         <activity
@@ -38,6 +34,10 @@
         <activity
             android:name="me.qingy.sharetally.TallyListActivity"
             android:label="@string/title_share_tally" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
         </activity>
         <activity
             android:name="me.qingy.sharetally.TallyEditActivity"

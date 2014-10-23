@@ -9,7 +9,8 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import me.qingy.sharetally.model.Tally;
+import me.qingy.sharetally.data.Tally;
+
 
 /**
  * Created by YangQ on 9/25/2014.

@@ -1,25 +1,25 @@
 package me.qingy.sharetally;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.parse.FindCallback;
-import com.parse.ParseException;
-import com.parse.ui.ParseLoginBuilder;
+import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
+import com.j256.ormlite.dao.Dao;
 
+import java.sql.SQLException;
 import java.util.List;
 
-import me.qingy.sharetally.Log.Logger;
-import me.qingy.sharetally.model.Tally;
+import me.qingy.sharetally.data.DatabaseHelper;
+import me.qingy.sharetally.data.Tally;
 
 
-public class TallyListActivity extends Activity {
+public class TallyListActivity extends OrmLiteBaseActivity<DatabaseHelper> {
     private TallyAdapter mAdapter;
     private ListView mListView;
 
@@ -28,7 +28,7 @@ public class TallyListActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tally_list);
 
-        AppEnv.init(this);
+        //AppEnv.init(this);
 
         mListView = (ListView) findViewById(R.id.tally_list);
 
@@ -38,7 +38,7 @@ public class TallyListActivity extends Activity {
                 Tally p = (Tally) mAdapter.getItem(position);
 
                 Intent intent = new Intent(TallyListActivity.this, RecordListActivity.class);
-                ObjectHolder.setTally(p);
+                intent.putExtra(Tally.KEY_ID, String.valueOf(p.getId()));
                 startActivity(intent);
             }
         });
@@ -47,23 +47,26 @@ public class TallyListActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        Tally.fetchTallyListInBackground(new FindCallback<Tally>() {
-            public void done(List<Tally> tallies, ParseException e) {
-                if (e != null) {
-                    Logger.e(e.getMessage());
-                    return;
-                }
 
-                if (mAdapter == null) {
-                    mAdapter = new TallyAdapter(TallyListActivity.this, tallies);
-                    mListView.setAdapter(mAdapter);
-                } else {
-                    mAdapter.setList(tallies);
-                    mAdapter.notifyDataSetChanged();
-                }
-                Logger.d("Fetch data done.");
+        List<Tally> tallies = null;
+
+        try {
+            Dao<Tally, Long> tallyDao = getHelper().getTallyDao();
+            tallies = tallyDao.queryForAll();
+            Log.v(this.getClass().getName(), "Fetch tallies successfully.");
+        } catch (SQLException e) {
+            Log.e(this.getClass().getName(), e.getMessage());
+        }
+
+        if (tallies != null) {
+            if (mAdapter == null) {
+                mAdapter = new TallyAdapter(TallyListActivity.this, tallies);
+                mListView.setAdapter(mAdapter);
+            } else {
+                mAdapter.setList(tallies);
+                mAdapter.notifyDataSetChanged();
             }
-        });
+        }
     }
 
     @Override
@@ -78,17 +81,15 @@ public class TallyListActivity extends Activity {
         switch (item.getItemId()) {
             case R.id.action_new:
                 Intent intent1 = new Intent(this, TallyEditActivity.class);
-                ObjectHolder.reset();
                 startActivity(intent1);
                 break;
             case R.id.action_friends:
                 Intent intent2 = new Intent(this, FriendListActivity.class);
-                ObjectHolder.reset();
                 startActivity(intent2);
                 break;
             case R.id.action_login:
-                ParseLoginBuilder builder = new ParseLoginBuilder(this);
-                startActivityForResult(builder.build(), 0);
+                //ParseLoginBuilder builder = new ParseLoginBuilder(this);
+                //startActivityForResult(builder.build(), 0);
                 break;
         }
         return super.onOptionsItemSelected(item);
