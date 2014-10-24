@@ -134,37 +134,32 @@ public class Tally {
         }
     }
 
-    public Map<Person, Result> calculate() {
-//        Map<me.qingy.sharetally.model.Person, Result> result = new HashMap<me.qingy.sharetally.model.Person, Result>();
-//        List<me.qingy.sharetally.model.Record> records = getRecords();
-//        List<me.qingy.sharetally.model.Person> participants = getParticipants();
-//
-//        for (me.qingy.sharetally.model.Person p : participants) {
-//            result.put(p, new Result());
-//        }
-//
-//        for (me.qingy.sharetally.model.Record r : records) {
-//            List<Double> weights = r.getBeneficiaryWeights();
-//            me.qingy.sharetally.model.Person payer = r.getPayer();
-//            double totalWeight = 0.0;
-//            for (int i = 0; i < participants.size(); ++i) {
-//                if (i < weights.size()) {
-//                    totalWeight += weights.get(i);
-//                }
-//            }
-//
-//            double paid = r.getAmount();
-//            result.get(payer).paid += paid;
-//
-//            for (int i = 0; i < participants.size(); ++i) {
-//                if (i < weights.size()) {
-//                    result.get(participants.get(i)).toPay += paid * weights.get(i) / totalWeight;
-//                }
-//            }
-//        }
-//
-//        return result;
-        return null;
+    public Map<Person, Result> calculate(RuntimeExceptionDao<Person, Integer> personDao, RuntimeExceptionDao<TallyParticipant, Integer> tallyParticipantDao) {
+        Map<Person, Result> result = new HashMap<Person, Result>();
+        List<Record> records = getRecords();
+        List<Person> participants = getParticipants(personDao, tallyParticipantDao);
+
+        for (Person p : participants) {
+            result.put(p, new Result());
+        }
+
+        for (Record r : records) {
+            Map<Person, Double> weights = r.getBeneficiaryWeights();
+            Person payer = r.getPayer();
+            double totalWeight = 0.0;
+            for (Person p : participants) {
+                totalWeight += weights.containsKey(p) ? weights.get(p) : 0.0;
+            }
+
+            double paid = r.getAmount();
+            result.get(payer).paid += paid;
+
+            for (Person p : participants) {
+                result.get(p).toPay += paid * (weights.containsKey(p) ? weights.get(p) : 0.0) / totalWeight;
+            }
+        }
+
+        return result;
     }
 
     public class Result {
