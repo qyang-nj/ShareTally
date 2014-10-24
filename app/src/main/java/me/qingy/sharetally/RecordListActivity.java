@@ -78,6 +78,7 @@ public class RecordListActivity extends OrmLiteBaseActivity<DatabaseHelper> {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.record_list, menu);
         mOptionsMenu = menu;
+        mOptionsMenu.findItem(R.id.action_calculate).setVisible(mTally.hasRecord());
         return true;
     }
 

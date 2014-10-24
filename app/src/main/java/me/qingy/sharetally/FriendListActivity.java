@@ -14,6 +14,7 @@ import android.widget.ListView;
 import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
 import com.j256.ormlite.dao.RuntimeExceptionDao;
 import com.j256.ormlite.stmt.QueryBuilder;
+import com.j256.ormlite.stmt.Where;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 
@@ -54,6 +55,7 @@ public class FriendListActivity extends OrmLiteBaseActivity<DatabaseHelper> {
 
                 if (Mode.DISPLAY == mMode) {
                     Intent intent = new Intent(FriendListActivity.this, FriendEditActivity.class);
+                    intent.putExtra(Person.KEY_ID, p.getId());
                     startActivity(intent);
                 } else if (Mode.SELECTION == mMode) {
                     CheckBox cb = (CheckBox) view.findViewById(R.id.chk);
@@ -78,7 +80,12 @@ public class FriendListActivity extends OrmLiteBaseActivity<DatabaseHelper> {
         List<Person> people = null;
         try {
             QueryBuilder<Person, Integer> qb = getHelper().getPersonDao().queryBuilder();
-            qb.where().notIn(Person.FIELD_ID, mExcludedItem);
+            Where<Person, Integer> wh = qb.where().eq(Person.FIELD_REMOVED, false).and();
+            if (mExcludedItem != null) {
+                wh.notIn(Person.FIELD_ID, mExcludedItem);
+            } else {
+                wh.not().idEq(1);
+            }
             people = getHelper().getPersonDao().query(qb.prepare());
         } catch (SQLException e) {
             Log.e(getClass().getName(), e.getMessage());

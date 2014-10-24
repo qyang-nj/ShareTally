@@ -12,7 +12,9 @@ import java.util.Date;
 @DatabaseTable
 public class Person {
     public static final String CURRENT_USERNAME = "__CURRENT_PERSON__";
+    public static final String KEY_ID = "person_id";
     public static final String FIELD_ID = "id";
+    public static final String FIELD_REMOVED = "removed";
 
     @DatabaseField(generatedId = true, columnName = FIELD_ID)
     private int id;
@@ -29,7 +31,7 @@ public class Person {
     @DatabaseField
     private String email;
 
-    @DatabaseField
+    @DatabaseField(columnName = FIELD_REMOVED)
     private boolean removed;
 
     public Person() {

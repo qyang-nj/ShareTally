@@ -3,9 +3,12 @@ package me.qingy.sharetally;
 import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.ActionMode;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -41,7 +44,10 @@ public class TallyEditActivity extends OrmLiteBaseActivity<DatabaseHelper> {
 
         ActionBar ab = getActionBar();
         if (ab != null) {
-            ab.setDisplayHomeAsUpEnabled(true);
+            ab.setDisplayHomeAsUpEnabled(false);
+            ab.setHomeButtonEnabled(true);
+            ab.setIcon(R.drawable.ic_action_accept);
+            ab.setTitle(getString(R.string.done));
         }
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
@@ -73,13 +79,13 @@ public class TallyEditActivity extends OrmLiteBaseActivity<DatabaseHelper> {
         int tallyId = getIntent().getIntExtra(Tally.KEY_ID, -1);
         if (tallyId < 0) { /* Create */
             mMode = Mode.CREATE;
-            getActionBar().setTitle(getResources().getString(R.string.title_create_tally).toUpperCase());
+            //getActionBar().setTitle(getResources().getString(R.string.title_create_tally).toUpperCase());
             mTally = new Tally();
             setAdapter();
         } else { /* Edit */
             mTally = getHelper().getTallyDao().queryForId(tallyId);
             mMode = Mode.EDIT;
-            getActionBar().setTitle(getResources().getString(R.string.title_edit_tally).toUpperCase());
+            //getActionBar().setTitle(getResources().getString(R.string.title_edit_tally).toUpperCase());
             mEtTitle.setText(mTally.getTitle());
             mEtDescription.setText(mTally.getDescription());
             /* Make a copy of original list. */
@@ -107,13 +113,8 @@ public class TallyEditActivity extends OrmLiteBaseActivity<DatabaseHelper> {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()) {
-            // Respond to the action bar's Up/Home button
+            /* Respond to the action bar's Up/Home button */
             case android.R.id.home:
-                //this.finish();
-                onBackPressed();
-                return true;
-
-            case R.id.action_save:
                 if (StringUtils.isEmpty(mEtTitle.getText().toString())) {
                     return true;
                 }
@@ -125,7 +126,7 @@ public class TallyEditActivity extends OrmLiteBaseActivity<DatabaseHelper> {
                 mTally.setParticipants(mParticipants, getHelper().getTallyParticipantDao());
 
                 onBackPressed();
-                break;
+                return true;
         }
 
         return super.onOptionsItemSelected(item);

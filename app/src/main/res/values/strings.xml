@@ -60,5 +60,6 @@
     <string name="currency">Currency</string>
     <string name="action_login">Login</string>
     <string name="myself">Myself</string>
+    <string name="discard">Discard</string>
 
 </resources>

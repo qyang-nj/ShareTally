@@ -1,5 +1,6 @@
 package me.qingy.sharetally;
 
+import android.app.ActionBar;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.Menu;
@@ -25,17 +26,24 @@ public class FriendEditActivity extends OrmLiteBaseActivity<DatabaseHelper> {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_friend_edit);
 
+        ActionBar ab = getActionBar();
+        if (ab != null) {
+            ab.setDisplayHomeAsUpEnabled(false);
+            ab.setHomeButtonEnabled(true);
+            ab.setIcon(R.drawable.ic_action_accept);
+            ab.setTitle(getString(R.string.done));
+        }
+
         mEtName = (EditText) findViewById(R.id.person_name);
         mEtEmail = (EditText) findViewById(R.id.person_email);
 
-        //mPerson = ObjectHolder.getPerson();
-        if (mPerson == null) { /* Create */
+        int personId = getIntent().getIntExtra(Person.KEY_ID, -1);
+        if (personId < 0) { /* Create */
             mMode = Mode.CREATE;
-            getActionBar().setTitle(getResources().getString(R.string.title_add_friend));
             mPerson = new Person();
         } else { /* Edit */
             mMode = Mode.EDIT;
-            getActionBar().setTitle(getResources().getString(R.string.edit));
+            mPerson = getHelper().getPersonDao().queryForId(personId);
             mEtName.setText(mPerson.getName());
             mEtEmail.setText(mPerson.getEmail());
         }
@@ -53,7 +61,7 @@ public class FriendEditActivity extends OrmLiteBaseActivity<DatabaseHelper> {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_save:
+            case android.R.id.home:
                 if (StringUtils.isEmpty(mEtName.getText().toString())) {
                     return true;
                 }

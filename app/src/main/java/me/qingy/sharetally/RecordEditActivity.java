@@ -1,5 +1,6 @@
 package me.qingy.sharetally;
 
+import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -61,6 +62,14 @@ public class RecordEditActivity extends FragmentActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_record_edit);
 
+        ActionBar ab = getActionBar();
+        if (ab != null) {
+            ab.setDisplayHomeAsUpEnabled(false);
+            ab.setHomeButtonEnabled(true);
+            ab.setIcon(R.drawable.ic_action_accept);
+            ab.setTitle(getString(R.string.done));
+        }
+
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
         mBtnAmount = (Button) findViewById(R.id.amount);
@@ -86,11 +95,9 @@ public class RecordEditActivity extends FragmentActivity
         int recordId = getIntent().getIntExtra(Record.KEY_ID, -1);
         if (recordId < 0) {
             mMode = Mode.CREATE;
-            getActionBar().setTitle(getResources().getString(R.string.title_add_record).toUpperCase());
             mRecord = new Record();
         } else {
             mMode = Mode.EDIT;
-            getActionBar().setTitle(getResources().getString(R.string.title_edit_record).toUpperCase());
             mRecord = getHelper().getRecordDao().queryForId(recordId);
         }
 
@@ -124,7 +131,7 @@ public class RecordEditActivity extends FragmentActivity
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()) {
-            case R.id.action_save:
+            case android.R.id.home:
                 save();
                 finish();
                 break;
@@ -134,8 +141,8 @@ public class RecordEditActivity extends FragmentActivity
                 fillData(mRecord);
             case R.id.action_delete:
                 mTally.delRecord(mRecord);
-                //mTally.submit();
-                //mRecord.deleteEventually();
+                getHelper().getTallyDao().update(mTally);
+                getHelper().getRecordDao().delete(mRecord);
                 finish();
                 break;
         }
