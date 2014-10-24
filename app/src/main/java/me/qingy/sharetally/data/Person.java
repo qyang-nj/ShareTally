@@ -11,7 +11,7 @@ import java.util.Date;
 
 @DatabaseTable
 public class Person {
-
+    public static final String CURRENT_USERNAME = "__CURRENT_PERSON__";
     public static final String FIELD_ID = "id";
 
     @DatabaseField(generatedId = true, columnName = FIELD_ID)
@@ -34,6 +34,26 @@ public class Person {
 
     public Person() {
         /* for ORMLite */
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Person)) {
+            return false;
+        }
+
+        Person p = (Person) obj;
+
+        if (this.id < 0 || p.getId() < 0) {
+            return false;
+        }
+
+        return this.id == p.getId();
+    }
+
+    @Override
+    public int hashCode() {
+        return id;
     }
 
     public int getId() {

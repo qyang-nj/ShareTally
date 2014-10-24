@@ -17,7 +17,7 @@ import java.util.List;
  * Created by qing on 10/21/14.
  */
 public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 5;
     private static final String DATABASE_NAME = "shareTally";
 
     private RuntimeExceptionDao<Tally, Integer> tallyDao = null;
@@ -37,13 +37,14 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
             TableUtils.createTable(connectionSource, Person.class);
             TableUtils.createTable(connectionSource, Record.class);
             TableUtils.createTable(connectionSource, TallyParticipant.class);
+            TableUtils.createTable(connectionSource, ParticipantWeight.class);
         } catch (SQLException e) {
             Log.e(DatabaseHelper.class.getName(), "Can't create database", e);
             throw new RuntimeException(e);
         }
 
         Person currPerson = new Person();
-        currPerson.setName("__CURRENT_PERSON__");
+        currPerson.setName(Person.CURRENT_USERNAME);
         getPersonDao().create(currPerson);
         Log.v(this.getClass().getName(), "Default user created.");
     }
@@ -56,6 +57,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
             TableUtils.dropTable(connectionSource, Tally.class, true);
             TableUtils.dropTable(connectionSource, Record.class, true);
             TableUtils.dropTable(connectionSource, TallyParticipant.class, true);
+            TableUtils.dropTable(connectionSource, ParticipantWeight.class, true);
             onCreate(db, connectionSource);
         } catch (SQLException e) {
             Log.e(DatabaseHelper.class.getName(), "Can't drop databases", e);

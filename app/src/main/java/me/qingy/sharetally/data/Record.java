@@ -1,11 +1,18 @@
 package me.qingy.sharetally.data;
 
+import com.j256.ormlite.dao.EagerForeignCollection;
+import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 
 import me.qingy.sharetally.Log.Logger;
 
@@ -36,8 +43,11 @@ public class Record {
     @DatabaseField
     private Date date;
 
-    @DatabaseField(canBeNull = false, foreign = true)
+    @DatabaseField(canBeNull = false, foreign = true, foreignAutoRefresh = true)
     private Person payer;
+
+    @ForeignCollectionField(eager = true)
+    ForeignCollection<ParticipantWeight> weights;
 
     @DatabaseField(foreign = true)
     private Tally tallyId;
@@ -80,5 +90,26 @@ public class Record {
 
     public void setPayer(Person payer) {
         this.payer = payer;
+    }
+
+    public HashMap<Person, Double> getBeneficiaryWeights() {
+        if (weights == null || weights.size() == 0) {
+            return null;
+        }
+
+        return new HashMap<Person, Double>() {
+            {
+                for (ParticipantWeight pw : weights) {
+                    put(pw.getParticipant(), pw.getWeight());
+                }
+            }
+        };
+    }
+
+    public void setBeneficiaryWeights(List<Person> beneficiaries, List<Double> weights) {
+        this.weights.clear();
+        for (int i = 0; i < beneficiaries.size(); ++i) {
+            this.weights.add(new ParticipantWeight(this, beneficiaries.get(i), weights.get(i)));
+        }
     }
 }

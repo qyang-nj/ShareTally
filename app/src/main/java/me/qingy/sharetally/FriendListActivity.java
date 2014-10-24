@@ -3,6 +3,7 @@ package me.qingy.sharetally;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,9 +13,11 @@ import android.widget.ListView;
 
 import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
 import com.j256.ormlite.dao.RuntimeExceptionDao;
+import com.j256.ormlite.stmt.QueryBuilder;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,7 +54,6 @@ public class FriendListActivity extends OrmLiteBaseActivity<DatabaseHelper> {
 
                 if (Mode.DISPLAY == mMode) {
                     Intent intent = new Intent(FriendListActivity.this, FriendEditActivity.class);
-                    //ObjectHolder.setPerson(p);
                     startActivity(intent);
                 } else if (Mode.SELECTION == mMode) {
                     CheckBox cb = (CheckBox) view.findViewById(R.id.chk);
@@ -72,7 +74,15 @@ public class FriendListActivity extends OrmLiteBaseActivity<DatabaseHelper> {
     @Override
     protected void onResume() {
         super.onResume();
-        List<Person> people = getHelper().getPersonDao().queryForAll();
+
+        List<Person> people = null;
+        try {
+            QueryBuilder<Person, Integer> qb = getHelper().getPersonDao().queryBuilder();
+            qb.where().notIn(Person.FIELD_ID, mExcludedItem);
+            people = getHelper().getPersonDao().query(qb.prepare());
+        } catch (SQLException e) {
+            Log.e(getClass().getName(), e.getMessage());
+        }
 
         if (people != null) {
             if (mAdapter == null) {

@@ -71,7 +71,6 @@ public class TallyEditActivity extends OrmLiteBaseActivity<DatabaseHelper> {
         });
 
         int tallyId = getIntent().getIntExtra(Tally.KEY_ID, -1);
-        //mTally = ObjectHolder.getTally();
         if (tallyId < 0) { /* Create */
             mMode = Mode.CREATE;
             getActionBar().setTitle(getResources().getString(R.string.title_create_tally).toUpperCase());
@@ -120,8 +119,10 @@ public class TallyEditActivity extends OrmLiteBaseActivity<DatabaseHelper> {
                 }
                 mTally.setTitle(mEtTitle.getText().toString());
                 mTally.setDescription(mEtDescription.getText().toString());
-                mTally.setParticipants(mParticipants, getHelper().getTallyParticipantDao());
                 getHelper().getTallyDao().createOrUpdate(mTally);
+
+                /* This statement has to be after tally is saved. */
+                mTally.setParticipants(mParticipants, getHelper().getTallyParticipantDao());
 
                 onBackPressed();
                 break;

@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import me.qingy.sharetally.data.DatabaseHelper;
 import me.qingy.sharetally.data.Person;
@@ -220,25 +221,34 @@ public class RecordEditActivity extends FragmentActivity
 
         /* Set payer */
         mPayer = r.getPayer();
-        if (mPayer == null) {
+        if (mPayer == null && mParticipants.size() > 0) {
             mPayer = mParticipants.get(0);
         }
         mBtnPayer.setText(mPayer.getName());
         mBtnPayer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new PayerSelectionDialogFragment().show(getSupportFragmentManager(), "123");
+                new PayerSelectionDialogFragment().show(getSupportFragmentManager(), null);
             }
         });
 
         /* Set weights */
-       // mWeights = r.getBeneficiaryWeights();
-        if (mWeights == null) {
+        Map<Person, Double> weights = mRecord.getBeneficiaryWeights();
+        if (weights == null) {
             mWeights = new ArrayList<Double>() {{
                 for (int i = 0; i < mParticipants.size(); ++i) {
                     add(1.0);
                 }
             }};
+        } else {
+            mWeights = new ArrayList<Double>() {
+                {
+                    Map<Person, Double> weights = mRecord.getBeneficiaryWeights();
+                    for (Person p : mParticipants) {
+                        add(weights.containsKey(p) ? weights.get(p) : 0.0);
+                    }
+                }
+            };
         }
 
         /* If the number of participants is larger than the size of weights, then fill up. */
@@ -256,7 +266,6 @@ public class RecordEditActivity extends FragmentActivity
         mRecord.setCaption(mEtLabel.getText().toString());
         mRecord.setDate(mDate);
         mRecord.setPayer(mPayer);
-        //mRecord.setBeneficiaryWeights(mWeights);
 
         if (mRecord.getId() == Record.ID_NEW) {
             mTally.addRecord(mRecord);
@@ -264,6 +273,10 @@ public class RecordEditActivity extends FragmentActivity
         } else {
             getHelper().getRecordDao().update(mRecord);
         }
+
+        getHelper().getRecordDao().refresh(mRecord);
+        mRecord.setBeneficiaryWeights(mParticipants, mWeights);
+        getHelper().getRecordDao().update(mRecord);
     }
 
     /* Payer selection */
