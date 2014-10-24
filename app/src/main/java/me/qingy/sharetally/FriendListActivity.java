@@ -125,7 +125,6 @@ public class FriendListActivity extends OrmLiteBaseActivity<DatabaseHelper> {
         switch (item.getItemId()) {
             case R.id.action_new:
                 intent = new Intent(this, FriendEditActivity.class);
-                ObjectHolder.reset();
                 startActivity(intent);
                 break;
             case R.id.action_done:

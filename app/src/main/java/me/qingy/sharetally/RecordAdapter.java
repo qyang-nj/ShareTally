@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import me.qingy.sharetally.data.Person;
 import me.qingy.sharetally.data.Record;
 
 
@@ -60,7 +61,8 @@ public class RecordAdapter extends BaseAdapter {
         }
 
         vh.label.setText(mRecords.get(position).getLabel());
-        vh.payer.setText(mRecords.get(position).getPayer().getName());
+        String name = mRecords.get(position).getPayer().getName();
+        vh.payer.setText(Person.CURRENT_USERNAME.equals(name) ? mContext.getString(R.string.myself) : name);
         vh.amount.setText(((Double) mRecords.get(position).getAmount()).toString());
         return convertView;
     }

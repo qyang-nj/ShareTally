@@ -29,8 +29,6 @@ public class TallyListActivity extends OrmLiteBaseActivity<DatabaseHelper> {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tally_list);
 
-        //AppEnv.init(this);
-
         mListView = (ListView) findViewById(R.id.tally_list);
 
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -67,7 +65,6 @@ public class TallyListActivity extends OrmLiteBaseActivity<DatabaseHelper> {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.tally_list, menu);
         return true;
     }
@@ -83,10 +80,10 @@ public class TallyListActivity extends OrmLiteBaseActivity<DatabaseHelper> {
                 Intent intent2 = new Intent(this, FriendListActivity.class);
                 startActivity(intent2);
                 break;
-            case R.id.action_login:
-                //ParseLoginBuilder builder = new ParseLoginBuilder(this);
-                //startActivityForResult(builder.build(), 0);
-                break;
+//            case R.id.action_login:
+//                //ParseLoginBuilder builder = new ParseLoginBuilder(this);
+//                //startActivityForResult(builder.build(), 0);
+//                break;
         }
         return super.onOptionsItemSelected(item);
     }

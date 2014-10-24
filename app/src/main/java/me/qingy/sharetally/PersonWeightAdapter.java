@@ -55,8 +55,9 @@ public class PersonWeightAdapter extends PersonAdapter implements NumberPickerDi
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String name = ((Person) getItem(position)).getName();
                 mNumberPickerBuilder.setReference(position)
-                        .setLabelText(((Person) getItem(position)).getName())
+                        .setLabelText(Person.CURRENT_USERNAME.equals(name) ? mContext.getString(R.string.myself) : name)
                         .addNumberPickerDialogHandler(PersonWeightAdapter.this);
                 mNumberPickerBuilder.show();
             }

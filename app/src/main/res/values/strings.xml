@@ -31,8 +31,8 @@
     <string name="create">Create</string>
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>
-    <string name="name_hint">"Friend's Name"</string>
-    <string name="email_hint">"His/Her E-mail Address"</string>
+    <string name="name_hint">Name</string>
+    <string name="email_hint">Email</string>
     <string name="title_activity_tally_list">Tally, Friend</string>
     <string name="title_activity_tally_edit">TallyEditActivity</string>
     <string name="title_activity_friend_list">FriendListActivity</string>

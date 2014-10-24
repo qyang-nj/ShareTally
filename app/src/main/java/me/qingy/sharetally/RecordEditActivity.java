@@ -191,16 +191,6 @@ public class RecordEditActivity extends FragmentActivity
                         .addNumberPickerDialogHandler(new AmountSetCallback());
                 npb.show();
             }
-        });        mBtnAmount.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                NumberPickerBuilder npb = new NumberPickerBuilder()
-                        .setFragmentManager(getSupportFragmentManager())
-                        .setPlusMinusVisibility(View.INVISIBLE)
-                        .setStyleResId(R.style.BetterPickersDialogFragment_Light)
-                        .addNumberPickerDialogHandler(new AmountSetCallback());
-                npb.show();
-            }
         });
 
         /* Set label */
