@@ -26,9 +26,17 @@
         android:lines="2"
         android:scrollbars="vertical" />
 
+    <EditText
+        android:id="@+id/tally_place"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/place"
+        android:inputType="text" />
+
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp">
 
         <TextView
             android:id="@+id/participants"

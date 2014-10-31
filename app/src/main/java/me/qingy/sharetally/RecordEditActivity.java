@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
@@ -20,7 +19,6 @@ import com.doomonafireball.betterpickers.calendardatepicker.CalendarDatePickerDi
 import com.doomonafireball.betterpickers.numberpicker.NumberPickerBuilder;
 import com.doomonafireball.betterpickers.numberpicker.NumberPickerDialogFragment;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
-import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
@@ -101,6 +99,21 @@ public class RecordEditActivity extends FragmentActivity
             mRecord = getHelper().getRecordDao().queryForId(recordId);
         }
 
+        /* Save & New Button */
+        Button btnSaveNew = (Button)findViewById(R.id.btn_save_new);
+        btnSaveNew.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mAmount == 0) {
+                    return;
+                }
+                save();
+                mRecord = new Record();
+                fillData(mRecord);
+            }
+        });
+        btnSaveNew.setVisibility(mMode == Mode.EDIT ? View.GONE : View.VISIBLE);
+
         fillData(mRecord);
     }
 
@@ -122,7 +135,7 @@ public class RecordEditActivity extends FragmentActivity
         if (mMode == Mode.CREATE) {
             menu.findItem(R.id.action_delete).setVisible(false);
         } else if (mMode == Mode.EDIT) {
-            menu.findItem(R.id.action_save_new).setVisible(false);
+            menu.findItem(R.id.action_cancel).setVisible(false);
         }
         return true;
     }
@@ -132,13 +145,15 @@ public class RecordEditActivity extends FragmentActivity
 
         switch (item.getItemId()) {
             case android.R.id.home:
+                if (mAmount == 0) {
+                    return true;
+                }
                 save();
                 finish();
                 break;
-            case R.id.action_save_new:
-                save();
-                mRecord = new Record();
-                fillData(mRecord);
+            case R.id.action_cancel:
+                finish();
+                break;
             case R.id.action_delete:
                 mTally.delRecord(mRecord);
                 getHelper().getTallyDao().update(mTally);
@@ -292,7 +307,8 @@ public class RecordEditActivity extends FragmentActivity
         @Override
         public void onClick(DialogInterface dialog, int which) {
             mPayer = mParticipants.get(which);
-            mBtnPayer.setText(mPayer.getName());
+            String name = mPayer.getName();
+            mBtnPayer.setText(Person.CURRENT_USERNAME.equals(name) ? getString(R.string.myself) : name);
         }
     }
 

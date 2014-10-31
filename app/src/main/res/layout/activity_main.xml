@@ -31,6 +31,12 @@
             android:id="@+id/btn_create_tally"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/title_create_tally"/>
+            android:text="@string/title_create_tally" />
+
+        <Button
+            android:id="@+id/btn_manage_friend"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/btn_manage_friend" />
     </LinearLayout>
 </android.support.v4.widget.DrawerLayout>

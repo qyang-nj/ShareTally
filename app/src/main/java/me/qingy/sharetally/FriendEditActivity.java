@@ -5,6 +5,8 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 
 import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
@@ -47,6 +49,19 @@ public class FriendEditActivity extends OrmLiteBaseActivity<DatabaseHelper> {
             mEtName.setText(mPerson.getName());
             mEtEmail.setText(mPerson.getEmail());
         }
+
+        /* Save & New Button */
+        Button btnSaveNew = (Button) findViewById(R.id.btn_save_new);
+        btnSaveNew.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                save();
+                mPerson = new Person();
+                mEtName.setText("");
+                mEtEmail.setText("");
+            }
+        });
+        btnSaveNew.setVisibility(mMode == Mode.EDIT ? View.GONE : View.VISIBLE);
     }
 
     @Override
@@ -54,6 +69,8 @@ public class FriendEditActivity extends OrmLiteBaseActivity<DatabaseHelper> {
         getMenuInflater().inflate(R.menu.friend_edit, menu);
         if (mMode == Mode.CREATE) {
             menu.findItem(R.id.action_delete).setVisible(false);
+        } else {
+            menu.findItem(R.id.action_cancel).setVisible(false);
         }
         return true;
     }
@@ -65,10 +82,11 @@ public class FriendEditActivity extends OrmLiteBaseActivity<DatabaseHelper> {
                 if (StringUtils.isEmpty(mEtName.getText().toString())) {
                     return true;
                 }
-                mPerson.setName(mEtName.getText().toString());
-                mPerson.setEmail(mEtEmail.getText().toString());
-                getHelper().getPersonDao().createOrUpdate(mPerson);
+                save();
                 onBackPressed();
+                break;
+            case R.id.action_cancel:
+                finish();
                 break;
             case R.id.action_delete:
                 new ConfirmationDialog().setArguments(getText(R.string.warning_delete_friend), new DialogInterface.OnClickListener() {
@@ -82,6 +100,15 @@ public class FriendEditActivity extends OrmLiteBaseActivity<DatabaseHelper> {
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void save() {
+        if (StringUtils.isEmpty(mEtName.getText().toString())) {
+            return;
+        }
+        mPerson.setName(mEtName.getText().toString());
+        mPerson.setEmail(mEtEmail.getText().toString());
+        getHelper().getPersonDao().createOrUpdate(mPerson);
     }
 
     private enum Mode {

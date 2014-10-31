@@ -9,9 +9,9 @@
         android:icon="@android:drawable/ic_menu_delete" />
 
     <item
-        android:id="@+id/action_save_new"
+        android:id="@+id/action_cancel"
         android:showAsAction="ifRoom"
-        android:title="@string/save_and_new"
-        android:icon="@android:drawable/ic_menu_add" />
+        android:title="@string/discard"
+        android:icon="@drawable/ic_action_cancel" />
 
 </menu>

@@ -101,11 +101,21 @@ public class MainActivity extends OrmLiteBaseActivity<DatabaseHelper> {
             actionBar.setHomeButtonEnabled(true);
         }
 
+        /* Create Tally Button */
         findViewById(R.id.btn_create_tally).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent1 = new Intent(MainActivity.this, TallyEditActivity.class);
                 startActivity(intent1);
+            }
+        });
+
+        /* Manage Friends Button */
+        findViewById(R.id.btn_manage_friend).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, FriendListActivity.class);
+                startActivity(intent);
             }
         });
 

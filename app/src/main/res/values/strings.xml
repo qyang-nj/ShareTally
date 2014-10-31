@@ -59,6 +59,8 @@
     <string name="myself">Myself</string>
     <string name="discard">Discard</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="btn_manage_friend">Manage Friends</string>
+    <string name="place">Place</string>
 
     <string-array name="tally_action">
         <item>@string/edit</item>

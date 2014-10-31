@@ -23,4 +23,10 @@
         android:hint="@string/email_hint"
         android:inputType="textEmailAddress" />
 
+    <Button
+        android:id="@+id/btn_save_new"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/save_and_new"/>
+
 </LinearLayout>
