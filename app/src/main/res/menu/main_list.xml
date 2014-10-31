@@ -1,6 +1,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="me.qingy.sharetally.RecordListActivity">
+    tools:context="me.qingy.sharetally.MainActivity">
 
     <item
         android:id="@+id/action_calculate"

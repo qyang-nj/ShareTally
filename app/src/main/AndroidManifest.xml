@@ -32,16 +32,13 @@
         </activity>
 
         <activity
-            android:name="me.qingy.sharetally.RecordListActivity"
+            android:name=".MainActivity"
             android:label="@string/title_share_tally">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name="me.qingy.sharetally.TallyListActivity"
-            android:label="@string/title_share_tally" />
         <activity
             android:name="me.qingy.sharetally.TallyEditActivity"
             android:label="@string/title_activity_tally_edit" />

@@ -25,7 +25,7 @@ import me.qingy.sharetally.data.DatabaseHelper;
 import me.qingy.sharetally.data.Tally;
 
 
-public class RecordListActivity extends OrmLiteBaseActivity<DatabaseHelper> {
+public class MainActivity extends OrmLiteBaseActivity<DatabaseHelper> {
 
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
@@ -61,13 +61,13 @@ public class RecordListActivity extends OrmLiteBaseActivity<DatabaseHelper> {
         public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, final long id) {
             final Tally tally = getHelper().getTallyDao().queryForId((int) id);
 
-            AlertDialog.Builder builder = new AlertDialog.Builder(RecordListActivity.this);
+            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
             builder.setTitle(tally.getTitle());
             builder.setItems(R.array.tally_action, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int which) {
                     switch (which) {
                         case 0: /* Edit */
-                            Intent intent = new Intent(RecordListActivity.this, TallyEditActivity.class);
+                            Intent intent = new Intent(MainActivity.this, TallyEditActivity.class);
                             intent.putExtra(Tally.KEY_ID, mSelectedTally.getId());
                             startActivity(intent);
                             break;
@@ -104,7 +104,7 @@ public class RecordListActivity extends OrmLiteBaseActivity<DatabaseHelper> {
         findViewById(R.id.btn_create_tally).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent1 = new Intent(RecordListActivity.this, TallyEditActivity.class);
+                Intent intent1 = new Intent(MainActivity.this, TallyEditActivity.class);
                 startActivity(intent1);
             }
         });
@@ -140,7 +140,7 @@ public class RecordListActivity extends OrmLiteBaseActivity<DatabaseHelper> {
 
         if (tallies != null) {
             if (mDrawerListAdapter == null) {
-                mDrawerListAdapter = new TallyAdapter(RecordListActivity.this, tallies);
+                mDrawerListAdapter = new TallyAdapter(MainActivity.this, tallies);
                 mDrawerList.setAdapter(mDrawerListAdapter);
             } else {
                 mDrawerListAdapter.setList(tallies);
@@ -173,7 +173,7 @@ public class RecordListActivity extends OrmLiteBaseActivity<DatabaseHelper> {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.record_list, menu);
+        getMenuInflater().inflate(R.menu.main_list, menu);
         boolean hasTally = !(mSelectedTally == null);
         boolean hasRecord = hasTally && mSelectedTally.hasRecord();
         menu.findItem(R.id.action_new).setVisible(hasTally);
@@ -195,7 +195,7 @@ public class RecordListActivity extends OrmLiteBaseActivity<DatabaseHelper> {
                 startActivity(intent);
                 break;
             case R.id.action_calculate:
-                intent = new Intent(RecordListActivity.this, ResultActivity.class);
+                intent = new Intent(MainActivity.this, ResultActivity.class);
                 intent.putExtra(Tally.KEY_ID, mSelectedTally.getId());
                 startActivity(intent);
                 break;

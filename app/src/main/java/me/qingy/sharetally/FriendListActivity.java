@@ -12,17 +12,13 @@ import android.widget.CheckBox;
 import android.widget.ListView;
 
 import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
-import com.j256.ormlite.dao.RuntimeExceptionDao;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.stmt.Where;
-import com.parse.FindCallback;
-import com.parse.ParseException;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import me.qingy.sharetally.Log.Logger;
 import me.qingy.sharetally.data.DatabaseHelper;
 import me.qingy.sharetally.data.Person;
 
@@ -62,10 +58,8 @@ public class FriendListActivity extends OrmLiteBaseActivity<DatabaseHelper> {
                     boolean checked = !cb.isChecked();
                     cb.setChecked(checked);
                     if (checked) {
-                        Logger.d("Add " + p.getName());
                         mSelectedItem.add(p.getId());
                     } else {
-                        Logger.d("Remove " + p.getName());
                         mSelectedItem.remove(p.getId());
                     }
                 }
@@ -102,7 +96,6 @@ public class FriendListActivity extends OrmLiteBaseActivity<DatabaseHelper> {
                 mAdapter.setList(people);
                 mAdapter.notifyDataSetChanged();
             }
-            Logger.d("Fetch data done.");
         }
     }
 

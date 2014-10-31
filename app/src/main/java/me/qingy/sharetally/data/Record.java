@@ -1,20 +1,13 @@
 package me.qingy.sharetally.data;
 
-import com.j256.ormlite.dao.EagerForeignCollection;
 import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
-import com.parse.ParseException;
-import com.parse.ParseObject;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-
-import me.qingy.sharetally.Log.Logger;
 
 /**
  * Created by qing on 10/22/14.
