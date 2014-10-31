@@ -221,7 +221,8 @@ public class RecordEditActivity extends FragmentActivity
         if (mPayer == null && mParticipants.size() > 0) {
             mPayer = mParticipants.get(0);
         }
-        mBtnPayer.setText(mPayer.getName());
+        String name = mPayer.getName();
+        mBtnPayer.setText(Person.CURRENT_USERNAME.equals(name) ? getString(R.string.myself) : name);
         mBtnPayer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

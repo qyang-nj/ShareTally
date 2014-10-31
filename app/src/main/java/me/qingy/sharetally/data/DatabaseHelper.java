@@ -17,7 +17,7 @@ import java.util.List;
  * Created by qing on 10/21/14.
  */
 public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
-    private static final int DATABASE_VERSION = 5;
+    private static final int DATABASE_VERSION = 6;
     private static final String DATABASE_NAME = "shareTally";
 
     private RuntimeExceptionDao<Tally, Integer> tallyDao = null;

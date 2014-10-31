@@ -56,6 +56,14 @@ public class Tally {
         /* for ORMLite */
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof Tally) {
+            return ((Tally) o).getId() == id;
+        }
+        return false;
+    }
+
     public int getId() {
         return id;
     }

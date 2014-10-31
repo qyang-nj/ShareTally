@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.List;
@@ -41,7 +42,7 @@ public class TallyAdapter extends BaseAdapter {
 
     @Override
     public long getItemId(int position) {
-        return position;
+        return mTallies.get(position).getId();
     }
 
     @Override
@@ -49,18 +50,18 @@ public class TallyAdapter extends BaseAdapter {
         ViewHolder vh;
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(android.R.layout.simple_list_item_2, null);
+            convertView = inflater.inflate(android.R.layout.simple_list_item_1, null);
 
             vh = new ViewHolder();
             vh.text1 = (TextView) convertView.findViewById(android.R.id.text1);
-            vh.text2 = (TextView) convertView.findViewById(android.R.id.text2);
+            //vh.text2 = (TextView) convertView.findViewById(android.R.id.text2);
             convertView.setTag(vh);
         } else {
             vh = (ViewHolder) convertView.getTag();
         }
 
         vh.text1.setText(mTallies.get(position).getTitle());
-        vh.text2.setText(mTallies.get(position).getDescription());
+        //vh.text2.setText(mTallies.get(position).getDescription());
 
         return convertView;
     }
@@ -68,5 +69,6 @@ public class TallyAdapter extends BaseAdapter {
     private static class ViewHolder {
         public TextView text1;
         public TextView text2;
+        //public Button btn;
     }
 }
