@@ -52,6 +52,7 @@ public class RecordListFragment extends OrmLiteFragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_record_list, container, false);
         mLvRecords = (ListView) view.findViewById(R.id.list);
+        mLvRecords.setEmptyView(view.findViewById(android.R.id.empty));
         mLvRecords.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

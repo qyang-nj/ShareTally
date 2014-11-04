@@ -2,11 +2,28 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/white"
     tools:context="me.qingy.sharetally.RecordListFragment">
 
     <ListView
         android:id="@+id/list"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
+    <!-- Empty Listview -->
+    <RelativeLayout
+        android:id="@android:id/empty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:textSize="40sp"
+            android:textColor="#AAAAAA"
+            android:text="@string/no_record" />
+    </RelativeLayout>
 
 </FrameLayout>

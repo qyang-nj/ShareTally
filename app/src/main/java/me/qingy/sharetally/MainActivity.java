@@ -8,8 +8,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -157,7 +159,15 @@ public class MainActivity extends OrmLiteBaseActivity<DatabaseHelper> {
                 mDrawerListAdapter.notifyDataSetChanged();
             }
 
-            if (mSelectedTally == null && tallies.size() > 0) {
+            if (tallies.size() == 0) { /* No tally */
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mDrawerLayout.openDrawer(Gravity.LEFT);
+                    }
+                }, 200);
+            } else if (mSelectedTally == null) { /* has tally */
+                //TODO Store last visited tally
                 new DrawerItemClickListener().onItemClick(null, null, 0, tallies.get(0).getId());
             }
         }
