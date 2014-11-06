@@ -36,7 +36,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_gravity="center"
-            android:background="@drawable/list_button" />
+            android:background="@drawable/list_button"
+            android:contentDescription="@null"/>
     </LinearLayout>
 
     <LinearLayout
@@ -77,6 +78,27 @@
             android:layout_width="0dp"
             android:layout_weight="3"
             android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/PromptText"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/receipt" />
+
+        <ImageView
+            android:id="@+id/receipt"
+            style="?android:attr/spinnerStyle"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@android:drawable/ic_menu_camera"
+            android:contentDescription="@null"/>
     </LinearLayout>
 
     <TextView

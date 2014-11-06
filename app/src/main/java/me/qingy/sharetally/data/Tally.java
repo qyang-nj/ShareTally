@@ -42,7 +42,7 @@ public class Tally {
     private String description;
 
     @ForeignCollectionField(eager = true)
-    ForeignCollection<Record> records;
+    private ForeignCollection<Record> records;
 
     public Tally() {
         /* for ORMLite */

@@ -1,10 +1,15 @@
 package me.qingy.sharetally.data;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+
 import com.j256.ormlite.dao.ForeignCollection;
+import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
 
+import java.io.ByteArrayOutputStream;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -45,6 +50,9 @@ public class Record {
     @DatabaseField(foreign = true)
     private Tally tallyId;
 
+    @DatabaseField(dataType = DataType.BYTE_ARRAY)
+    private byte[] receiptImage;
+
     public Record() {
         /* for ORMLite */
     }
@@ -83,6 +91,19 @@ public class Record {
 
     public void setPayer(Person payer) {
         this.payer = payer;
+    }
+
+    public void setReceiptImage(Bitmap bmp) {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bmp.compress(Bitmap.CompressFormat.PNG, 0, stream);
+        receiptImage = stream.toByteArray();
+    }
+
+    public Bitmap getReceiptImage() {
+        if (receiptImage == null) {
+            return null;
+        }
+        return BitmapFactory.decodeByteArray(receiptImage, 0, receiptImage.length);
     }
 
     public HashMap<Person, Double> getBeneficiaryWeights() {
