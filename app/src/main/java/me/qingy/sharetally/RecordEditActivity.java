@@ -98,7 +98,15 @@ public class RecordEditActivity extends FragmentActivity
         findViewById(R.id.label_list).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new LabelListDialogFragment().show(getSupportFragmentManager(), null);
+                AlertDialog.Builder builder = new AlertDialog.Builder(RecordEditActivity.this);
+                builder.setTitle(getResources().getString(R.string.labels))
+                        .setItems(R.array.label_list, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                mEtLabel.setText(getResources().getStringArray(R.array.label_list)[which]);
+                            }
+                        })
+                        .setNegativeButton(android.R.string.cancel, null);
+                builder.create().show();
             }
         });
 
@@ -286,7 +294,10 @@ public class RecordEditActivity extends FragmentActivity
         mBtnPayer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new PayerSelectionDialogFragment().show(getSupportFragmentManager(), null);
+                AlertDialog.Builder builder = new AlertDialog.Builder(RecordEditActivity.this);
+                builder.setTitle(getResources().getString(R.string.payer))
+                        .setAdapter(new PersonNameAdapter(RecordEditActivity.this, mParticipants), new PayerSelectedCallback());
+                builder.create().show();
             }
         });
 
@@ -418,39 +429,12 @@ public class RecordEditActivity extends FragmentActivity
         return builder.create();
     }
 
-    /* Payer selection */
-    public class PayerSelectionDialogFragment extends DialogFragment {
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            builder.setTitle(getResources().getString(R.string.payer))
-                    .setAdapter(new PersonNameAdapter(RecordEditActivity.this, mParticipants), new PayerSelectedCallback());
-            return builder.create();
-        }
-    }
-
     public class PayerSelectedCallback implements DialogInterface.OnClickListener {
         @Override
         public void onClick(DialogInterface dialog, int which) {
             mPayer = mParticipants.get(which);
             String name = mPayer.getName();
             mBtnPayer.setText(Person.CURRENT_USERNAME.equals(name) ? getString(R.string.myself) : name);
-        }
-    }
-
-    /* Label list */
-    public class LabelListDialogFragment extends DialogFragment {
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            builder.setTitle(getResources().getString(R.string.labels))
-                    .setItems(R.array.label_list, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            mEtLabel.setText(getResources().getStringArray(R.array.label_list)[which]);
-                        }
-                    })
-                    .setNegativeButton(android.R.string.cancel, null);
-            return builder.create();
         }
     }
 
