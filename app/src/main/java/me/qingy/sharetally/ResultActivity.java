@@ -1,6 +1,8 @@
 package me.qingy.sharetally;
 
 import android.app.ActionBar;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -55,6 +57,16 @@ public class ResultActivity extends OrmLiteBaseActivity<DatabaseHelper> {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_help:
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle(R.string.help)
+                        .setMessage("The first number is the amount the person have paid, while the second one is the amount the person needs to pay.\n"
+                                + "The positive total number is amount needs to be received, while negative is the amount needs to give.")
+                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.dismiss();
+                            }
+                        });
+                builder.create().show();
                 break;
         }
         return super.onOptionsItemSelected(item);

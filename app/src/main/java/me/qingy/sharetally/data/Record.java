@@ -94,8 +94,13 @@ public class Record {
     }
 
     public void setReceiptImage(Bitmap bmp) {
+        if (bmp == null) {
+            receiptImage = null;
+            return;
+        }
+
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bmp.compress(Bitmap.CompressFormat.PNG, 0, stream);
+        bmp.compress(Bitmap.CompressFormat.JPEG, 80, stream);
         receiptImage = stream.toByteArray();
     }
 

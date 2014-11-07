@@ -3,7 +3,7 @@ package me.qingy.sharetally;
 import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Context;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -13,7 +13,6 @@ import android.os.Handler;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -41,7 +40,6 @@ import java.util.List;
 import java.util.Map;
 
 import it.sephiroth.android.library.imagezoom.ImageViewTouch;
-import it.sephiroth.android.library.imagezoom.ImageViewTouchBase;
 import me.qingy.sharetally.data.DatabaseHelper;
 import me.qingy.sharetally.data.Person;
 import me.qingy.sharetally.data.Record;
@@ -127,12 +125,22 @@ public class RecordEditActivity extends FragmentActivity
                 if (mAmount == 0) {
                     return;
                 }
-                save();
-                mRecord = new Record();
-                fillData(mRecord);
+
+                final ProgressDialog progressDialog = ProgressDialog.show(RecordEditActivity.this, null, "Saving...");
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        save();
+                        progressDialog.dismiss();
+                        mRecord = new Record();
+                        fillData(mRecord);
+                    }
+                }).start();
+
             }
         });
-        btnSaveNew.setVisibility(mMode == Mode.EDIT ? View.GONE : View.VISIBLE);
+        //btnSaveNew.setVisibility(mMode == Mode.EDIT ? View.GONE : View.VISIBLE);
+        btnSaveNew.setVisibility(View.GONE);
 
         fillData(mRecord);
     }
@@ -168,8 +176,15 @@ public class RecordEditActivity extends FragmentActivity
                 if (mAmount == 0) {
                     return true;
                 }
-                save();
-                finish();
+                final ProgressDialog progressDialog = ProgressDialog.show(this, null, "Saving...");
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        save();
+                        progressDialog.dismiss();
+                        finish();
+                    }
+                }).start();
                 break;
             case R.id.action_cancel:
                 finish();
@@ -279,6 +294,8 @@ public class RecordEditActivity extends FragmentActivity
         mReceiptImage = r.getReceiptImage();
         if (mReceiptImage != null) {
             mBtnReceipt.setImageBitmap(mReceiptImage);
+        } else {
+            mBtnReceipt.setImageResource(android.R.drawable.ic_menu_camera);
         }
         mBtnReceipt.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -324,7 +341,6 @@ public class RecordEditActivity extends FragmentActivity
         mRecord.setCaption(mEtLabel.getText().toString());
         mRecord.setDate(mDate);
         mRecord.setPayer(mPayer);
-        mRecord.setReceiptImage(mReceiptImage);
 
         if (mRecord.getId() == Record.ID_NEW) {
             mTally.addRecord(mRecord);
@@ -335,6 +351,7 @@ public class RecordEditActivity extends FragmentActivity
 
         getHelper().getRecordDao().refresh(mRecord);
         mRecord.setBeneficiaryWeights(mParticipants, mWeights);
+        mRecord.setReceiptImage(mReceiptImage);
         getHelper().getRecordDao().update(mRecord);
     }
 
@@ -384,6 +401,14 @@ public class RecordEditActivity extends FragmentActivity
                         getImageChooseDialog().show();
                     }
                 })
+                .setNeutralButton(R.string.delete, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int i) {
+                        mReceiptImage = null;
+                        mBtnReceipt.setImageResource(android.R.drawable.ic_menu_camera);
+                        dialog.dismiss();
+                    }
+                })
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int i) {
@@ -420,11 +445,10 @@ public class RecordEditActivity extends FragmentActivity
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             builder.setTitle(getResources().getString(R.string.labels))
                     .setItems(R.array.label_list, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    mEtLabel.setText(getResources().getStringArray(R.array.label_list)[which]);
-                                }
-                            }
-                    )
+                        public void onClick(DialogInterface dialog, int which) {
+                            mEtLabel.setText(getResources().getStringArray(R.array.label_list)[which]);
+                        }
+                    })
                     .setNegativeButton(android.R.string.cancel, null);
             return builder.create();
         }

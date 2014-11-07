@@ -77,6 +77,9 @@ public class MainActivity extends OrmLiteBaseActivity<DatabaseHelper> {
                             new ConfirmationDialog().setArguments(getText(R.string.warning_delete_tally), new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
+                                    if (tally.equals(mSelectedTally)) {
+                                        mSelectedTally = null;
+                                    }
                                     getHelper().getTallyDao().delete(tally);
                                     onResume(); /* Refresh */
                                 }
@@ -160,13 +163,20 @@ public class MainActivity extends OrmLiteBaseActivity<DatabaseHelper> {
             }
 
             if (tallies.size() == 0) { /* No tally */
-                new Handler().postDelayed(new Runnable() {
+                new Handler().post(new Runnable() {
                     @Override
                     public void run() {
                         mDrawerLayout.openDrawer(Gravity.LEFT);
                     }
-                }, 200);
-            } else if (mSelectedTally == null) { /* has tally */
+                });
+                FragmentManager fragmentManager = getFragmentManager();
+                Fragment fragment = fragmentManager.findFragmentById(R.id.content_frame);
+                if (fragment != null) {
+                    fragmentManager.beginTransaction().remove(fragment).commit();
+                }
+
+                setTitle(getString(R.string.app_name));
+            } else if (mSelectedTally == null) { /* has tally, set a default one */
                 //TODO Store last visited tally
                 new DrawerItemClickListener().onItemClick(null, null, 0, tallies.get(0).getId());
             }
@@ -174,8 +184,8 @@ public class MainActivity extends OrmLiteBaseActivity<DatabaseHelper> {
 
         if (mSelectedTally != null) {
             getHelper().getTallyDao().refresh(mSelectedTally);
-            invalidateOptionsMenu();
         }
+        invalidateOptionsMenu();
     }
 
     @Override
