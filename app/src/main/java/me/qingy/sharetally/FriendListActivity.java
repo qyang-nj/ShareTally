@@ -30,6 +30,7 @@ public class FriendListActivity extends OrmLiteBaseActivity<DatabaseHelper> {
     private Mode mMode = Mode.DISPLAY;
     private ArrayList<Integer> mSelectedItem = new ArrayList<Integer>();
     private ArrayList<Integer> mExcludedItem;
+    private static final int PICK_CONTACT = 3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,6 +119,10 @@ public class FriendListActivity extends OrmLiteBaseActivity<DatabaseHelper> {
         switch (item.getItemId()) {
             case R.id.action_new:
                 intent = new Intent(this, FriendEditActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.action_import:
+                intent = new Intent(this, ContactSelectionActivity.class);
                 startActivity(intent);
                 break;
             case R.id.action_done:

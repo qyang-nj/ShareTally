@@ -68,16 +68,19 @@
     <string name="choose_from_gallery">Choose fom Gallery</string>
     <string name="add_receipt">Add Receipt</string>
     <string name="change">Change</string>
+    <string name="share">Share</string>
+    <string name="action_import">"Import from Contacts"</string>
 
     <string-array name="tally_action">
         <item>@string/edit</item>
         <item>@string/delete</item>
     </string-array>
-
     <string-array name="image_choose_action">
         <item>@string/take_photo</item>
         <item>@string/choose_from_gallery</item>
         <item>@string/cancel</item>
     </string-array>
+
+    <string name="title_activity_contact_selection">ContactSelectionActivity</string>
 
 </resources>

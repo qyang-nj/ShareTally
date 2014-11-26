@@ -1,60 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="me.qingy.sharetally">
+    package="me.qingy.sharetally" >
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
 
     <application
-        android:name="me.qingy.sharetally.App"
+        android:name=".App"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme">
-
+        android:theme="@style/AppTheme" >
         <activity
             android:name=".DispatchActivity"
             android:label="@string/app_name"
             android:launchMode="singleTop" />
-
         <activity
             android:name="com.parse.ui.ParseLoginActivity"
             android:label="@string/app_name"
-            android:launchMode="singleTop">
+            android:launchMode="singleTop" >
             <meta-data
                 android:name="com.parse.ui.ParseLoginActivity.PARSE_LOGIN_ENABLED"
                 android:value="true" />
-
             <meta-data
                 android:name="com.parse.ui.ParseLoginActivity.APP_LOGO"
                 android:resource="@drawable/ic_launcher" />
         </activity>
-
         <activity
             android:name=".MainActivity"
-            android:label="@string/title_share_tally">
+            android:label="@string/title_share_tally" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-            android:name="me.qingy.sharetally.TallyEditActivity"
+            android:name=".TallyEditActivity"
             android:label="@string/title_activity_tally_edit" />
         <activity
-            android:name="me.qingy.sharetally.FriendListActivity"
+            android:name=".FriendListActivity"
             android:label="@string/title_friends" />
         <activity
-            android:name="me.qingy.sharetally.FriendEditActivity"
+            android:name=".FriendEditActivity"
             android:label="@string/title_activity_friend_edit" />
         <activity
-            android:name="me.qingy.sharetally.RecordEditActivity"
+            android:name=".RecordEditActivity"
             android:label="" />
         <activity
-            android:name="me.qingy.sharetally.ResultActivity"
+            android:name=".ResultActivity"
             android:label="" />
+        <activity
+            android:name=".ContactSelectionActivity"
+            android:label="@string/title_activity_contact_selection" >
+        </activity>
     </application>
+
 </manifest>

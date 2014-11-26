@@ -8,6 +8,12 @@
         android:title="@string/action_settings" />
 
     <item
+        android:id="@+id/action_import"
+        android:showAsAction="ifRoom"
+        android:title="@string/action_import"
+        android:icon="@drawable/ic_action_group" />
+
+    <item
         android:id="@+id/action_done"
         android:icon="@drawable/ic_action_accept"
         android:showAsAction="ifRoom"
