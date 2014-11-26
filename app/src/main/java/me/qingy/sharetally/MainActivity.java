@@ -2,6 +2,7 @@ package me.qingy.sharetally;
 
 import android.app.ActionBar;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.DialogInterface;
@@ -228,6 +229,13 @@ public class MainActivity extends OrmLiteBaseActivity<DatabaseHelper> {
                 intent = new Intent(MainActivity.this, ResultActivity.class);
                 intent.putExtra(Tally.KEY_ID, mSelectedTally.getId());
                 startActivity(intent);
+                break;
+            case R.id.action_sync:
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle("Unimplemented")
+                        .setMessage("It is supposed to use IntentService to synchronize with Parse server. However, I don't have enough time. Sorry!")
+                        .setPositiveButton(android.R.string.ok, null);
+                builder.create().show();
                 break;
         }
 

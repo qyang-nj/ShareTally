@@ -82,5 +82,6 @@
     </string-array>
 
     <string name="title_activity_contact_selection">ContactSelectionActivity</string>
+    <string name="sync">Sync</string>
 
 </resources>

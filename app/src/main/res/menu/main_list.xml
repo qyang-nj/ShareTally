@@ -13,4 +13,10 @@
         android:icon="@drawable/ic_action_new"
         android:showAsAction="always"
         android:title="@string/action_new" />
+
+    <item
+        android:id="@+id/action_sync"
+        android:icon="@drawable/ic_action_refresh"
+        android:showAsAction="ifRoom"
+        android:title="@string/sync" />
 </menu>
