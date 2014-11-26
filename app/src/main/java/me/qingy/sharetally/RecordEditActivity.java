@@ -125,31 +125,6 @@ public class RecordEditActivity extends FragmentActivity
             mRecord = getHelper().getRecordDao().queryForId(recordId);
         }
 
-        /* Save & New Button */
-        Button btnSaveNew = (Button) findViewById(R.id.btn_save_new);
-        btnSaveNew.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mAmount == 0) {
-                    return;
-                }
-
-                final ProgressDialog progressDialog = ProgressDialog.show(RecordEditActivity.this, null, "Saving...");
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        save();
-                        progressDialog.dismiss();
-                        mRecord = new Record();
-                        fillData(mRecord);
-                    }
-                }).start();
-
-            }
-        });
-        //btnSaveNew.setVisibility(mMode == Mode.EDIT ? View.GONE : View.VISIBLE);
-        btnSaveNew.setVisibility(View.GONE);
-
         fillData(mRecord);
     }
 
