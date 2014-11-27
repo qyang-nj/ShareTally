@@ -30,6 +30,7 @@ dependencies {
     compile 'com.android.support:support-v4:20.0.0'
     compile 'com.j256.ormlite:ormlite-android:4.48'
     compile 'it.sephiroth.android.library.imagezoom:imagezoom:+'
+    compile 'se.emilsjolander:stickylistheaders:2.5.2'
     //ImageViewTouch
     compile('com.doomonafireball.betterpickers:library:1.5.2') {
         exclude group: 'com.android.support', module: 'support-v4'

@@ -7,16 +7,19 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import java.text.DateFormat;
+import java.util.Calendar;
 import java.util.List;
 
 import me.qingy.sharetally.data.Person;
 import me.qingy.sharetally.data.Record;
+import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
 
 
 /**
  * Created by YangQ on 9/27/2014.
  */
-public class RecordAdapter extends BaseAdapter {
+public class RecordAdapter extends BaseAdapter implements StickyListHeadersAdapter {
     private Context mContext;
     private List<Record> mRecords;
 
@@ -67,10 +70,42 @@ public class RecordAdapter extends BaseAdapter {
         return convertView;
     }
 
+    @Override
+    public View getHeaderView(int position, View convertView, ViewGroup parent) {
+        HeaderViewHolder vh;
+        if (convertView == null) {
+            LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            convertView = inflater.inflate(R.layout.list_header, null);
+
+            vh = new HeaderViewHolder();
+            vh.text = (TextView) convertView.findViewById(R.id.text);
+            convertView.setTag(vh);
+        } else {
+            vh = (HeaderViewHolder) convertView.getTag();
+        }
+        vh.text.setText(DateFormat.getDateInstance().format(mRecords.get(position).getDate()));
+        return convertView;
+    }
+
+    @Override
+    public long getHeaderId(int position) {
+        Calendar cal = Calendar.getInstance(); // locale-specific
+        cal.setTime(mRecords.get(position).getDate());
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        return cal.getTime().getTime();
+    }
+
     private static class ViewHolder {
         public TextView label;
         public TextView amount;
         public TextView payer;
+    }
+
+    private static class HeaderViewHolder {
+        public TextView text;
     }
 
 }

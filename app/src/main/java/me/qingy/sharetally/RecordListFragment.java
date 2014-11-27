@@ -12,11 +12,12 @@ import java.util.List;
 
 import me.qingy.sharetally.data.Record;
 import me.qingy.sharetally.data.Tally;
+import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 
 
 public class RecordListFragment extends OrmLiteFragment {
 
-    private ListView mLvRecords;
+    private StickyListHeadersListView mLvRecords;
 
     private Tally mTally;
     private List<Record> mRecords;
@@ -51,7 +52,7 @@ public class RecordListFragment extends OrmLiteFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_record_list, container, false);
-        mLvRecords = (ListView) view.findViewById(R.id.list);
+        mLvRecords = (StickyListHeadersListView) view.findViewById(R.id.list);
         mLvRecords.setEmptyView(view.findViewById(android.R.id.empty));
         mLvRecords.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
