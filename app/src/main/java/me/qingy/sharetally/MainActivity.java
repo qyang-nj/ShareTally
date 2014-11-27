@@ -2,7 +2,6 @@ package me.qingy.sharetally;
 
 import android.app.ActionBar;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.DialogInterface;
@@ -58,11 +57,13 @@ public class MainActivity extends OrmLiteBaseActivity<DatabaseHelper> {
         }
     }
 
-    /* Long press on drawer item. */
-    private class DrawerItemLongClickListener implements ListView.OnItemLongClickListener {
+    private class TallyMoreOptionClickListener implements View.OnClickListener {
         @Override
-        public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, final long id) {
-            final Tally tally = getHelper().getTallyDao().queryForId((int) id);
+        public void onClick(View view) {
+            final Tally tally = (Tally) view.getTag();
+            if (tally == null) {
+                return;
+            }
 
             AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
             builder.setTitle(tally.getTitle());
@@ -92,7 +93,6 @@ public class MainActivity extends OrmLiteBaseActivity<DatabaseHelper> {
             });
 
             builder.create().show();
-            return true;
         }
     }
 
@@ -129,8 +129,6 @@ public class MainActivity extends OrmLiteBaseActivity<DatabaseHelper> {
 
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
-        mDrawerList.setOnItemLongClickListener(new DrawerItemLongClickListener());
-
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
                 R.drawable.ic_drawer, R.string.action_friend, R.string.action_login) {
 
@@ -156,7 +154,7 @@ public class MainActivity extends OrmLiteBaseActivity<DatabaseHelper> {
 
         if (tallies != null) {
             if (mDrawerListAdapter == null) {
-                mDrawerListAdapter = new TallyAdapter(MainActivity.this, tallies);
+                mDrawerListAdapter = new TallyAdapter(MainActivity.this, tallies, new TallyMoreOptionClickListener());
                 mDrawerList.setAdapter(mDrawerListAdapter);
             } else {
                 mDrawerListAdapter.setList(tallies);

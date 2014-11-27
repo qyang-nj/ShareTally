@@ -41,7 +41,7 @@ public class Tally {
     @DatabaseField
     private String description;
 
-    @ForeignCollectionField(eager = true)
+    @ForeignCollectionField(eager = true, orderColumnName = "date", orderAscending = false)
     private ForeignCollection<Record> records;
 
     public Tally() {

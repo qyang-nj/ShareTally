@@ -13,6 +13,7 @@ import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -82,6 +83,7 @@ public class ResultActivity extends OrmLiteBaseActivity<DatabaseHelper> {
 
     private String getSharingString(Map<Person, Tally.Result> result) {
         final String newLine = System.getProperty("line.separator");
+        final DecimalFormat formatter = new DecimalFormat("0.00");
         StringBuilder sb = new StringBuilder();
         sb.append("Hi,");
         sb.append(newLine);
@@ -95,7 +97,7 @@ public class ResultActivity extends OrmLiteBaseActivity<DatabaseHelper> {
             String name = p.getName();
             sb.append(Person.CURRENT_USERNAME.equals(name) ? "I" : name);
             sb.append(": ");
-            sb.append(r.paid - r.toPay);
+            sb.append(formatter.format(r.paid - r.toPay));
             sb.append(System.getProperty("line.separator"));
         }
 

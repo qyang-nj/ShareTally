@@ -20,10 +20,12 @@ public class TallyAdapter extends BaseAdapter {
 
     private Context mContext;
     private List<Tally> mTallies;
+    private View.OnClickListener mMoreBtnCb;
 
-    public TallyAdapter(Context context, List<Tally> tallies) {
+    public TallyAdapter(Context context, List<Tally> tallies, View.OnClickListener moreBtnCb) {
         mContext = context;
         mTallies = tallies;
+        mMoreBtnCb = moreBtnCb;
     }
 
     public void setList(List<Tally> tallies) {
@@ -46,29 +48,30 @@ public class TallyAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         ViewHolder vh;
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(android.R.layout.simple_list_item_1, null);
+            convertView = inflater.inflate(R.layout.item_tally, null);
 
             vh = new ViewHolder();
-            vh.text1 = (TextView) convertView.findViewById(android.R.id.text1);
-            //vh.text2 = (TextView) convertView.findViewById(android.R.id.text2);
+            vh.text = (TextView) convertView.findViewById(R.id.text);
+            vh.btn = (Button) convertView.findViewById(R.id.more);
             convertView.setTag(vh);
         } else {
             vh = (ViewHolder) convertView.getTag();
         }
 
-        vh.text1.setText(mTallies.get(position).getTitle());
-        //vh.text2.setText(mTallies.get(position).getDescription());
+        vh.text.setText(mTallies.get(position).getTitle());
+
+        vh.btn.setTag(mTallies.get(position));
+        vh.btn.setOnClickListener(mMoreBtnCb);
 
         return convertView;
     }
 
     private static class ViewHolder {
-        public TextView text1;
-        public TextView text2;
-        //public Button btn;
+        public TextView text;
+        public Button btn;
     }
 }
